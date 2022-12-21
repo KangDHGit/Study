@@ -27,5 +27,14 @@
     <ClCompile Include="fibo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="hanoi_tower.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="practice.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
