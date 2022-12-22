@@ -71,6 +71,12 @@ int sum_iter(int n)
 	return result;
 }
 
+int bc(int n, int k)
+{
+	if (k == 0 || k == n) return 1;
+	else return (bc(n - 1, k - 1) + bc(n - 1, k));
+}
+
 int main()
 {
 	cout << "recursive_8 : " << recursive_8(5) << endl;
@@ -85,5 +91,6 @@ int main()
 	cout << "divSum(5) : " << divSum(5) << endl;
 	//fib_15(6);
 	cout << "sum_iter(5) : " << sum_iter(5) << endl;
+	cout << "bc(5,3) : " << bc(5, 3) << endl;
 	return 0;
 }
