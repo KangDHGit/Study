@@ -77,6 +77,48 @@ int bc(int n, int k)
 	else return (bc(n - 1, k - 1) + bc(n - 1, k));
 }
 
+int Ackermann_18_recu(int m, int n, int& count)
+{
+	++count;
+	cout << "m : " << m << " n : " << n << endl;
+	if (m == 0) return n + 1;
+	else if (n == 0) return Ackermann_18_recu(m - 1, 1,count);
+	else
+		return Ackermann_18_recu(m - 1, Ackermann_18_recu(m, n - 1,count),count);
+}
+
+int Ackermann_18_iter(int m, int n)
+{
+	int list[1000];
+	int esp = 0;
+
+	list[esp] = m;	// [0 인덱스]에 m
+	esp++;			// 인덱스를 뒤로 이동
+	list[esp] = n;	// [1 인덱스]에 n
+
+	while (true) {
+		if (esp == 0) {							// 인덱스가 0이면 [0 인덱스 값]을 리턴
+			return list[esp];
+		}
+		else if (list[esp - 1] == 0) {			// [전 인덱스 값]이 0일경우
+			list[esp - 1] = list[esp] + 1;		// [전 인덱스 값]에 [현 인덱스 값 + 1] 입력
+
+			esp = esp - 1;						// 인덱스를 앞으로 이동
+		}
+		else if (list[esp] == 0) {				// [현 인덱스 값]이 0인경우
+			list[esp - 1] = list[esp - 1] - 1;	// [전 인덱스 값] -1
+			list[esp] = 1;						// [현 인덱스 값] +1
+		}
+		else {									// [전 인덱스 값]과 [현 인덱스 값이] 0이 아닌경우 
+			list[esp + 1] = list[esp] - 1;		// [다음 인덱스 값]에 [현 인덱스 값 - 1] 입력
+			list[esp] = list[esp - 1];			// [현 인덱스 값]에 [전 인덱스 값] 입력
+			list[esp - 1] = list[esp - 1] - 1;	// [전 인덱스 값]에 [전 인덱스 값 - 1] 입력
+
+			esp = esp + 1;						// 인덱스를 뒤로 이동
+		}
+	}
+}
+
 int main()
 {
 	cout << "recursive_8 : " << recursive_8(5) << endl;
@@ -92,5 +134,10 @@ int main()
 	//fib_15(6);
 	cout << "sum_iter(5) : " << sum_iter(5) << endl;
 	cout << "bc(5,3) : " << bc(5, 3) << endl;
+
+	int ackerCount = 0;
+	cout << "Ackermaan_18(3,2) : " << Ackermann_18_recu(1, 2, ackerCount); cout << " count : " << ackerCount << endl;
+	ackerCount = 0;
+	cout << "Ackermaan_18(1,1) : " << Ackermann_18_iter(1, 1) << endl;
 	return 0;
 }
