@@ -136,8 +136,8 @@ int main()
 	cout << "bc(5,3) : " << bc(5, 3) << endl;
 
 	int ackerCount = 0;
-	cout << "Ackermaan_18(3,2) : " << Ackermann_18_recu(1, 2, ackerCount); cout << " count : " << ackerCount << endl;
+	cout << "Ackermaan_18(2,2) : " << Ackermann_18_recu(2, 2, ackerCount); cout << " count : " << ackerCount << endl;
 	ackerCount = 0;
-	cout << "Ackermaan_18(1,1) : " << Ackermann_18_iter(1, 1) << endl;
+	cout << "Ackermaan_18(3,1) : " << Ackermann_18_iter(3, 1) << endl;
 	return 0;
 }
