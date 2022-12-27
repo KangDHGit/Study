@@ -50,15 +50,15 @@ struct polynomial {			// 다항식 구조체 타입 선언
 	{
 		for (int i = degree; i > 0; i--)
 		{
-			/*string oper;
-			if (coef[i - degree] > 0)
+			string oper;
+			if (coef[degree - i] > 0)
 				oper = " + ";
-			else if (coef[i - degree] < 0)
+			else if (coef[degree - i] < 0)
 				oper = " - ";
 			else
 				continue;
-			cout << (int)coef[i - degree] << "^" << i << oper;*/
-			cout << (int)coef[i - degree] << "^" << i << "+";
+			cout << (int)coef[degree - i] << "^" << i << oper;
+			//cout << (int)coef[degree - i] << "^" << i << "+";
 		}
 		if(coef[degree] != 0.0)
 			cout << (int)coef[degree] << endl;
@@ -67,8 +67,8 @@ struct polynomial {			// 다항식 구조체 타입 선언
 
 int main()
 {
-	polynomial a = { 5, {3,6,0,0,0,10} };
-	polynomial b = { 4, {7,0,5,0,1} };
+	polynomial a = { 5, {3,6,0,0,0,10} }; // 3x^5 + 6x^4 + 10
+	polynomial b = { 4, {-7,0,5,0,1} };
 	polynomial c;
 
 	a.print_poly();
