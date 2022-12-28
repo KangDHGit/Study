@@ -24,5 +24,11 @@
     <ClCompile Include="p81_polynomial2.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p85_matrix1.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="p87_matrix2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
