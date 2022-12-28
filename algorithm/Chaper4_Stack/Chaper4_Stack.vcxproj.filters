@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stack_program.cpp">
+    <ClCompile Include="stack_program_int.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="stack_program_complex.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -21,6 +21,7 @@ public:
 	element peek();
 };
 
+#pragma region stackType define
 bool stackType::is_full()
 {
 	if (top == MAX_STACK_SIZE) return true;
@@ -56,6 +57,7 @@ element stackType::peek()
 	else
 		return data[top];
 }
+#pragma endregion
 
 int main()
 {
