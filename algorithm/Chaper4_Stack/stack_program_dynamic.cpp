@@ -6,7 +6,6 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-#define MAX_STACK_SIZE 100
 #define MAX_STRING 100
 
 class element {
@@ -69,10 +68,10 @@ void stackType::init_stack()
 }
 bool stackType::resize_stack(int& cap)
 {
-	element* new_mem = new element[cap];			//새로운 공간 확보
-	if (new_mem == NULL) return false;				//확보한 공간이 NULL인지 확인
+	element* new_mem = new element[cap];			//새로운 공간 할당
+	if (new_mem == NULL) return false;				//할당된 공간이 NULL인지 확인
 	else {
-		std::copy(&data[0], &data[top+1], new_mem);	//새로운 공간에 기존데이터 복사
+		std::copy(&data[0], &data[top+1], new_mem);	//할당된 공간에 기존데이터 복사
 		delete[] data;								//기존데이터 삭제
 		data = new_mem;								//새로운 공간이랑 주소 연결
 		return true;
@@ -114,10 +113,10 @@ int main()
 	stackType class_A;
 
 
-	element student0{ 1,"강대한", "김포" };
-	element student1{ 2,"홍길동", "서울" };
+	element student0{ 1,"강바람", "서울" };
+	element student1{ 2,"홍길동", "김포" };
 	element student2{ 3,"김철수", "일산" };
-	element student3{ 4,"김영희", "일산" };
+	element student3{ 4,"김영희", "인천" };
 
 	class_A.push(student0);
 	class_A.push(student1);
@@ -129,6 +128,7 @@ int main()
 	class_A.pop().print();
 	class_A.pop().print();
 	
+	// 초기화 테스트
 	class_A.init_stack();
 	class_A.push(student3);
 	class_A.push(student2);
