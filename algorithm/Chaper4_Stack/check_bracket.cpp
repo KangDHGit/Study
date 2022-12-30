@@ -136,10 +136,19 @@ int main()
 	const char* p = "{ A[(i+1)] = 0; }";
 	cout << "=====괄호검사 시작=====" << endl;
 	if (bracket_stack.check_matching(p))
-		cout << "괄호검사 성공" << endl;
+		cout << "<<괄호검사 성공>>" << endl;
 	else
-		cout << "괄호검사 실패" << endl;
+		cout << "<<괄호검사 실패>>" << endl;
 	cout << "=====괄호검사 종료=====" << endl;
+	cout << endl; bracket_stack.init_stack(); cout << endl;
 	
+	p = "{ A[(i+1)] = 0; ";
+	cout << "=====괄호검사 시작=====" << endl;
+	if (bracket_stack.check_matching(p))
+		cout << "<<괄호검사 성공>>" << endl;
+	else
+		cout << "<<괄호검사 실패>>" << endl;
+	cout << "=====괄호검사 종료=====" << endl;
+
 	return 0;
 }
