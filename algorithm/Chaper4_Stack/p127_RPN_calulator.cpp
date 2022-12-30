@@ -85,7 +85,7 @@ bool stackType::not_oper(char& item) const
 }
 int stackType::eval(const char* exp)
 {
-	int op1, op2;				//계산할때 사용할 피연산자 변수
+	int num1, num2;				//계산할때 사용할 피연산자 변수
 	int value = 0;				//피연산자 일경우 스택에 저장할 변수
 	int len = strlen(exp);		//문자배열 exp의 길이
 	char ch;					//exp에서 하나씩 문자를 받을 변수;
@@ -100,24 +100,24 @@ int stackType::eval(const char* exp)
 		}
 		else
 		{
-			op2 = pop(); op1 = pop();		//나중에 저장된 피연산자부터 가져온다.
-			cout << "연산자 감지! : " << op1 << ' ' << ch << ' ' << op2 << endl;
+			num2 = pop(); num1 = pop();				//나중에 저장된 피연산자부터 가져온다.
+			cout << "연산자 감지! : " << num1 << ' ' << ch << ' ' << num2 << endl;
 			switch (ch)
 			{
 			case'+':
-				value = op1 + op2; push(value);	//계산후 다시 스택에 저장
+				value = num1 + num2; push(value);	//계산후 다시 스택에 저장
 				break;
 			case'-':
-				value = op1 - op2; push(value);
+				value = num1 - num2; push(value);
 				break;
 			case'*':
-				value = op1 * op2; push(value);
+				value = num1 * num2; push(value);
 				break;
 			case'/':
-				value = op1 / op2; push(value);
+				value = num1 / num2; push(value);
 				break;
 			case'%':
-				value = op1 % op2; push(value);
+				value = num1 % num2; push(value);
 				break;
 			}
 		}
