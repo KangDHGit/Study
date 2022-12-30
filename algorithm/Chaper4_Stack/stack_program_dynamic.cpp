@@ -51,6 +51,7 @@ public:
 	void push(element item);
 	element pop();
 	element peek();
+	~stackType() { delete_stack(); }
 };
 
 #pragma region stackType define
@@ -134,8 +135,6 @@ int main()
 	class_A.push(student2);
 	class_A.pop().print();
 	class_A.pop().print();
-
-	class_A.delete_stack();
 
 	return 0;
 }
