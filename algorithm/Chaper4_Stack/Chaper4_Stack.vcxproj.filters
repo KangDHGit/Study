@@ -15,16 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stack_program_int.cpp">
+    <ClCompile Include="p110_stack_program_int.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="stack_program_complex.cpp">
+    <ClCompile Include="p114_stack_program_complex.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="stack_program_dynamic.cpp">
+    <ClCompile Include="p118_stack_program_dynamic.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="check_bracket.cpp">
+    <ClCompile Include="p120_check_bracket.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="p127_RPN_calulator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
