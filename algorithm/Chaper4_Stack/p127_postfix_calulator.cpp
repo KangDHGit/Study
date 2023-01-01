@@ -130,7 +130,7 @@ int main()
 {
 	stackType stack;
 	int result;
-	cout << "(8 / 2) - 3 + (3 * 2)" << endl;
+	cout << "((8 / 2) -3) + (3 * 2)" << endl;
 	cout << "후위표기식은 82/3-32*+" << endl;
 	result = stack.eval("82/3-32*+");
 	cout << "계산결과 : " << result << endl;
