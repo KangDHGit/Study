@@ -43,7 +43,7 @@ bool stackType::resize_stack(int& cap) {
 	}
 }
 bool stackType::is_full() const { return (top == capacity - 1); }
-bool stackType::is_empty() const { cout << "top : " << top << endl; return (top == -1); }
+bool stackType::is_empty() const { /*cout << "top : " << top << endl;*/ return (top == -1); }
 void stackType::push(char item) {
 	if (is_full()) {
 		/*cout << "스택 공간을 추가확보 합니다." << endl;*/
