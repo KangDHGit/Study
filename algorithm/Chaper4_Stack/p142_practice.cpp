@@ -215,6 +215,7 @@ public:
 	}
 };
 #pragma endregion
+//13. 정수 반복되는 숫자 제거 프로그램
 #pragma region question_13
 class stackType_13 {
 	int* data;
@@ -297,7 +298,8 @@ void question_13::run() {
 	}
 }
 #pragma endregion
-#pragma region question_14
+//15. 미로탐색 프로그램 최단경로 출력
+#pragma region question_15
 struct element {
 	short r;
 	short c;
@@ -490,6 +492,83 @@ public:
 	}
 };
 #pragma endregion
+//16. 회문 판독 프로그램
+#pragma region question_16
+class stackType_16 {
+	char data[50];
+	int top;
+public:
+	void init() { top = -1; };
+	bool is_full() { return top == 49; }
+	bool is_empty() { return top == -1; }
+	void push(char item) {
+		if (is_full()) { cout << "스택 포화에러" << endl; }
+		else { top++; data[top] = item; }
+	}
+	char pop() {
+		if(is_empty()) { cout << "스택 공백에러" << endl; exit(1); } 
+		else { return data[top--]; }
+	}
+	char peek() {
+		if (is_empty()) { cout << "스택 공백에러" << endl; exit(1); }
+		else { return data[top]; }
+	}
+};
+class question_16 {
+	stackType_16 stack;
+	char* reword;
+	void rewording(const char* str);
+	bool palindrome(char* str);
+public:
+	void run();
+	~question_16() { delete[] reword; }
+};
+void question_16::rewording(const char* str) {
+	int len = strlen(str);
+	if (reword != NULL)
+		delete[] reword;
+	reword = new char[len];
+	int i = 0;
+	int wordindex = 0;
+	for (int i = 0; i < len; i++)
+	{
+		char chr = str[i];
+		if (chr >= 'a' && chr <= 'z') {
+			reword[wordindex] = chr;
+			wordindex++;
+		}
+		else if (chr >= 'A' && chr <= 'Z') {
+			reword[wordindex] = tolower(chr);
+			wordindex++;
+		}
+	}
+}
+bool question_16::palindrome(char* str) {
+	int i = 0;
+	while (str[i] != NULL)
+	{
+		stack.push(str[i]); i++;
+	}
+	i = 0;
+	while (stack.is_empty())
+	{
+		if (stack.pop() == str[i])
+			continue;
+		else
+			return false;
+	}
+	return true;
+}
+void question_16::run() {
+	char str[50];
+	cout << "문자열을 입력하세요 : "; cin >> str;
+	rewording(str);
+	if (palindrome(reword))
+		cout << "회문입니다." << endl;
+	else
+		cout << "회문이 아닙니다." << endl;
+}
+#pragma endregion
 
 
 int main()
@@ -501,7 +580,9 @@ int main()
 	q12.run();*/
 	/*question_13 q13;
 	q13.run();*/
-	question_15 q15;
-	q15.run();
+	/*question_15 q15;
+	q15.run();*/
+	question_16 q16;
+	q16.run();
 	return 0;
 }
