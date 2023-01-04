@@ -1,4 +1,5 @@
 #include<iostream>
+#include<random>
 
 using std::cout;
 using std::endl;
@@ -7,7 +8,7 @@ using std::cin;
 #define MAX_QUEUE_SIZE 5
 
 typedef	int element;
-
+#pragma region CircularQueue
 class QueueType {
 	element data[MAX_QUEUE_SIZE];
 	int front;
@@ -31,60 +32,60 @@ void QueueType::init_data(int MAX_SIZE) {
 void QueueType::enquque(element item) {
 	if (is_full()) { error("큐가 포화상태입니다."); }
 	else {
-		rear = (rear + 1) % MAX_QUEUE_SIZE; data[rear] = item;
+		rear = (rear + 1) % MAX_QUEUE_SIZE;
+		data[rear] = item;
 	}
 }
 element QueueType::dequque() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
-	else { front = (front + 1 ) % MAX_QUEUE_SIZE; return data[front]; }
+	else {
+		front = (front + 1) % MAX_QUEUE_SIZE;
+		return data[front];
+	}
 }
 element QueueType::peek() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
-	else { return data[front]; }
+	else {
+		return data[front];
+	}
 }
 void QueueType::queue_print() {
-	cout << "front : " << front << " rear : " << rear << endl;
-	int iter = 0;
-	for (int i = 0; i < MAX_QUEUE_SIZE; i++) {
-		// f는 자료가 없는 위치이기 때문에 이하 i는 자료가 있는 위치이기 때문에 초과
-		if (i == front) {
-			cout.width(5); cout << "f |";
-		}
-		else if (data[i] == -1) {
-			cout.width(5); cout << "|";
-		}
-		else {
-			cout.width(3); cout << data[i] << " |";
-		}
+	for (int i = 0; i < MAX_QUEUE_SIZE; i++)
+	{
+		if (front == i) { cout.width(5); cout << "f |"; }
+		else if (data[i] == -1) { cout.width(5); cout << "|"; }
+		else { cout.width(3); cout << data[i] << " |"; }
 	}
 	cout << endl;
 }
+#pragma endregion
 
 int main()
 {
+	//시드값을 얻기위한 random_device 생성
+	std::random_device rd;
+
+	//random_device를 통해 난수생성 엔진을 초기화 한다.
+	std::mt19937 gen(rd());
+
+	//정수(1~100)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+	std::uniform_int_distribution<int> dis(1, 100);
+
 	QueueType q;
 	int element;
-	cout << "--데이터 추가 단계--" << endl;
-	while (!q.is_full())
+	for (int i = 0; i < 100; i++)
 	{
-		cout << "정수를 입력하시오 : "; cin >> element;
-		q.enquque(element);
-		q.queue_print();
-		if (q.is_full())
-		{
-			element = q.dequque();
-			cout << "꺼내진 정수 : " << element << endl;
-			q.queue_print();
-		}
-	}
-	cout << "큐는 포화상태 입니다." << endl << endl;
+		if (q.is_full()) { cout << "포화상태입니다." << endl; break; }
 
-	while (!q.is_empty())
-	{
-		element = q.dequque();
-		cout << "꺼내진 정수 : " << element << endl;
+		if (dis(gen) % 5 == 0) {
+			q.enquque(dis(gen));
+		}
+		q.queue_print();
+		if (dis(gen) % 10 == 0) {
+			element = q.dequque();
+		}
 		q.queue_print();
 	}
-	cout << "큐는 공백상태 입니다." << endl;
+
 	return 0;
 }
