@@ -44,18 +44,20 @@ element QueueType::peek() {
 }
 void QueueType::queue_print() {
 	cout << "front : " << front << " rear : " << rear << endl;
-	int iter = 0;
-	for (int i = 0; i < MAX_QUEUE_SIZE; i++) {
-		// f는 자료가 없는 위치이기 때문에 이하 i는 자료가 있는 위치이기 때문에 초과
-		if (i == front) {
-			cout.width(5); cout << "f |";
+	bool forward = front < rear;
+	bool empty = is_empty();
+
+	for (int i = 0; i < MAX_QUEUE_SIZE; i++)
+	{
+		if (empty) {
+			if (front == i) { cout.width(6); cout << "fr |"; }
+			else { cout.width(6); cout << "|"; }
 		}
-		else if (data[i] == -1) {
-			cout.width(5); cout << "|";
-		}
-		else {
-			cout.width(3); cout << data[i] << " |";
-		}
+		else if (front == i) { cout.width(6); cout << "f |"; }
+		else if (rear == i) { cout.width(3); cout << data[i] << "r |"; }
+		else if (forward && (i < front || rear < i)) { cout.width(6); cout << "|"; }
+		else if (!forward && (rear < i && i < front)) { cout.width(6); cout << "|"; }
+		else { cout.width(4); cout << data[i] << " |"; }
 	}
 	cout << endl;
 }

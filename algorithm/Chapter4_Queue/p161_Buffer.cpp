@@ -50,11 +50,20 @@ element QueueType::peek() {
 	}
 }
 void QueueType::queue_print() {
+	bool forward = front < rear;
+	bool empty = is_empty();
+
 	for (int i = 0; i < MAX_QUEUE_SIZE; i++)
 	{
-		if (front == i) { cout.width(5); cout << "f |"; }
-		else if (data[i] == -1) { cout.width(5); cout << "|"; }
-		else { cout.width(3); cout << data[i] << " |"; }
+		if (empty) {
+			if (front == i) { cout.width(6); cout << "fr |"; }
+			else { cout.width(6); cout << "|"; }
+		}
+		else if (front == i) { cout.width(6); cout << "f |"; }
+		else if (rear == i) { cout.width(3); cout << data[i] << "r |"; }
+		else if (forward && (i < front || rear < i)) { cout.width(6); cout << "|"; }
+		else if (!forward && (rear < i && i < front)) { cout.width(6); cout << "|"; }
+		else { cout.width(4); cout << data[i] << " |"; }
 	}
 	cout << endl;
 }

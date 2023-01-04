@@ -24,5 +24,8 @@
     <ClCompile Include="p161_Buffer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p165_CirularDeque.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
