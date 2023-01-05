@@ -119,7 +119,7 @@ public:
 class question_10 {
 	QueueType q;
 public:
-	bool fibo(int n) {
+	int fibo(int n) {
 		if (n == 0) return 0;
 		else if (n == 1) return 1;
 
@@ -136,6 +136,7 @@ public:
 		{
 			result = q.dequeue();
 		}
+
 		return result;
 	}
 };
