@@ -40,7 +40,10 @@ element QueueType::dequque() {
 }
 element QueueType::peek() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
-	else { return data[front]; }
+	else {
+		int result = (front + 1) % MAX_QUEUE_SIZE;
+		return data[result];
+	}
 }
 void QueueType::queue_print() {
 	cout << "front : " << front << " rear : " << rear << endl;

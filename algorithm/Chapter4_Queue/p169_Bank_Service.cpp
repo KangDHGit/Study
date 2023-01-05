@@ -66,7 +66,8 @@ element queueType::dequeue() {
 element queueType::peek() {
 	if (is_empty()) { cout << "큐가 공백상태 입니다." << endl; return element(); }
 	else {
-		return data[front];
+		int result = (front + 1) % MAX_QUEUE_SIZE;
+		return data[result];
 	}
 }
 void queueType::print_queue() {
