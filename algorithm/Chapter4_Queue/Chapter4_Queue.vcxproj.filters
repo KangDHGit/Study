@@ -30,5 +30,8 @@
     <ClCompile Include="p169_Bank_Service.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p170_Bank_Service2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
