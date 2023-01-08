@@ -50,33 +50,33 @@ Complex complex_add(Complex a, Complex b)
 }
 
 //8번
-void insert(int array[], int loc, int value)
+void insert(int arr[], int loc, int value)
 {
 	if (loc < 0 && loc > MAX - 1) { cout << "잘못된 인덱스 접근입니다." << endl; return; }
 	// 뒤에서부터 한칸씩 밀음
 	for (int i = ITEMS; i > loc; i--)
-		array[i] = array[i - 1];
-	array[loc] = value;
+		arr[i] = arr[i - 1];
+	arr[loc] = value;
 
 	for (int i = 0; i < ITEMS + 1; i++)
-		cout << array[i] << ", ";
+		cout << arr[i] << ", ";
 
 	cout << endl;
 }
 
 //10번
-void delete_loc(int array[], int loc)
+void delete_loc(int arr[], int loc)
 {
 	if (loc < 0 && loc > MAX) { cout << "잘못된 인덱스 접근입니다." << endl; return; }
-	else if (loc == MAX) { array[loc] = NULL; return; }
+	else if (loc == MAX) { arr[loc] = NULL; return; }
 
 	for (int i = loc; i < ITEMS - 1; i++)
-		array[i] = array[i + 1];
+		arr[i] = arr[i + 1];
 
-	array[ITEMS] = NULL;
+	arr[ITEMS] = NULL;
 
 	for (int i = 0; i < ITEMS - 1; i++)
-		cout << array[i] << ", ";
+		cout << arr[i] << ", ";
 
 	cout << endl;
 }
@@ -107,8 +107,8 @@ int main()
 	Complex c3 = complex_add(c1, c2);
 
 	//8번
-	int array[MAX] = { 0,1,2,3,4,5,6 };
-	insert(array, 3, 3);
+	int arr[MAX] = { 0,1,2,3,4,5,6 };
+	insert(arr, 3, 3);
 
 	//9번
 	int array2[MAX] = { 0,1,2,3,4,5,6 };
