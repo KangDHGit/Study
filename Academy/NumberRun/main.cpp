@@ -27,8 +27,9 @@ int main()
 	};
 
 
-	// 내풀이
-	for (int i = 0; i < 7; i++)
+// 내풀이
+#pragma region My
+	/*for (int i = 0; i < 7; i++)
 	{
 		for (int j = 0; j < 25; j++)
 		{
@@ -66,7 +67,8 @@ int main()
 			cout << map;
 		}
 		cout << endl;
-	}
+	}*/
+#pragma endregion
 
 	//선생님
 	for (int i = 0; i < 7; i++)
