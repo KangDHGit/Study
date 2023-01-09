@@ -152,5 +152,6 @@ int main()
 	list.deleteItem(0); list.print_list();		//30 20 10 40
 	list.deleteItem(2); list.print_list();		//30 20 40
 	list.replace(1, 2); list.print_list();		//30 40 20
+	int a;
 	return 0;
 }
