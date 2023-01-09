@@ -7,7 +7,7 @@ using std::cin;
 typedef int element;
 
 class ArrayListType {
-	element* arr;
+	element* arr;						//도전문제
 	int capacity;
 	int size;
 public:
@@ -18,13 +18,17 @@ public:
 	ArrayListType() { init(); }
 	bool is_empty() { return size == 0; }
 	bool is_full() { return size >= capacity; }
-	bool resize(int cap);
+	bool is_indexOver(int index) { return (index < 0 || index > size); }
+	bool resize(int cap);					//도전문제
 	void print_list();
-	void insert_first(element item);
+	void insert_first(element item);		//도전문제
 	void insert_last(element item);
 	void insert(int index, element item);
 	element get_entry(int index);
 	element deleteItem(int index);
+	void clear();							//퀴즈(데이터만 삭제, size초기화, capacity는 그대로)
+	void replace(int indexA, int indexB);	//퀴즈 A랑 B 교환
+	int get_length() { return size; }		//퀴즈
 	~ArrayListType() { delete[] arr; }
 };
 
@@ -82,7 +86,7 @@ void ArrayListType::insert_last(element item) {
 	arr[size] = item; size++;
 }
 void ArrayListType::insert(int index, element item) {
-	if (index < 0 || index > size) {
+	if (is_indexOver(index)) {
 		cout << "잘못된 인덱스 값입니다." << endl; return;
 	}
 	if (is_full()) {
@@ -100,13 +104,13 @@ void ArrayListType::insert(int index, element item) {
 	arr[index] = item; size++;
 }
 element ArrayListType::get_entry(int index) {
-	if (index < 0 || index > size) {
+	if (is_indexOver(index)) {
 		cout << "잘못된 인덱스 값입니다." << endl; return element{ 0 };
 	}
 	return arr[index];
 }
 element ArrayListType::deleteItem(int index) {
-	if (index < 0 || index > size) {
+	if (is_indexOver(index)) {
 		cout << "잘못된 인덱스 값입니다." << endl; return element{ 0 };
 	}
 	element result = arr[index];
@@ -114,6 +118,26 @@ element ArrayListType::deleteItem(int index) {
 		arr[i] = arr[i + 1];
 	size--;
 	return result;
+}
+void ArrayListType::clear() {
+	element* new_mem = new element[capacity];
+	if (new_mem == NULL) {
+		cout << "clear에 필요한 메모리를 할당받지 못했습니다." << endl; return;
+	}
+	else{
+		delete[] arr;
+		arr = new_mem; size = 0;
+	}
+}
+void ArrayListType::replace(int indexA, int indexB) {
+	bool aCheck = is_indexOver(indexA);
+	bool bCheck = is_indexOver(indexB);
+	if (aCheck || bCheck) {
+		cout << "잘못된 인덱스 값입니다." << endl; return;
+	}
+	int temp = *(arr + indexA);
+	*(arr + indexA) = *(arr + indexB);
+	*(arr + indexB) = temp;
 }
 #pragma endregion
 
@@ -127,5 +151,6 @@ int main()
 	list.insert_first(50); list.print_list();	//50 30 20 10 40
 	list.deleteItem(0); list.print_list();		//30 20 10 40
 	list.deleteItem(2); list.print_list();		//30 20 40
+	list.replace(1, 2); list.print_list();		//30 40 20
 	return 0;
 }
