@@ -18,5 +18,8 @@
     <ClCompile Include="p178_arrayList.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p183_arrayList_dynamic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

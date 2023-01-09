@@ -57,7 +57,7 @@ element ArrayListType::deleteItem(int index) {
 	if (index >= 0 && index < size) {
 		element result = arr[index];
 		for (int i = index; i < size - 1; i++) // 3, 0 1 2 3 4 , 0 1 2 4
-			arr[index] = arr[index + 1];
+			arr[i] = arr[i + 1];
 		size--;
 		return result;
 	}
@@ -73,7 +73,7 @@ int main()
 	list.insert(0, 10); list.print_list();
 	list.insert(0, 20); list.print_list();
 	list.insert(0, 30); list.print_list();
-	//list.insert_Last(40); list.print_list();
+	list.insert_Last(40); list.print_list();
 	list.deleteItem(0); list.print_list();
 
 	return 0;
