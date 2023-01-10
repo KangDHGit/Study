@@ -81,7 +81,7 @@ public:
 		cout << "NULL" << endl;
 	}
 
-	//202p 특정한 값을 탐색하는 함수
+	//p202 특정한 값을 탐색하는 함수
 	static bool contains(ListNode* head, element data) {
 		ListNode* iter = head;
 		while (iter != NULL)
@@ -104,10 +104,24 @@ public:
 		}
 		return NULL;
 	}
+	//p204 두개의 리스트를 하나로 합치기
+	static ListNode* Concat_List(ListNode* head1, ListNode* head2) {
+		if (head1 == NULL) { return head2; }
+		else if (head2 == NULL) { return head1; }
+		else {
+			ListNode* iter = head1;
+			while (iter->Link != NULL)
+				iter = iter->Link;
+			iter->Link = head2;
+			cout << "Concat_List 완료" << endl;
+			return head1;
+		}
+	}
 };
 
 int main()
 {
+#pragma region p200 단어를 저장하는 리스트
 	ListNode* head = NULL;
 	element data{ "APPLE" };
 	head = ListNode::insert_first(head, data);
@@ -132,6 +146,9 @@ int main()
 	head = ListNode::delete_Node(head, 3);
 	ListNode::print_list(head);					//BANANA->ORANGE->APPLE->MELON
 
+#pragma endregion
+
+#pragma region p202 특정한 값을 찾는 함수
 	strcpy_s(data.word, "ORANGE");
 	if (ListNode::contains(head, data))
 		cout << "리스트에서 " << data.word << "를 찾았습니다." << endl;
@@ -148,6 +165,20 @@ int main()
 		cout << "리스트에서 " << data.word << "를 찾았습니다." << endl;
 	else
 		cout << "리스트에서 " << data.word << "를 찾지 못했습니다" << endl;
+#pragma endregion
 
+#pragma region p204 두개의 리스트를 합치는 함수
+	ListNode* head2 = NULL;
+	element data2{ "KIWI" };
+	head2 = ListNode::insert_first(head2, data2);
+	strcpy_s(data2.word, "TOMATO");
+	head2 = ListNode::add(head2, data2);
+	cout << "head : "; ListNode::print_list(head);
+	cout << "head2 : "; ListNode::print_list(head2);
+	head = ListNode::Concat_List(head, head2);
+	cout << "head : "; ListNode::print_list(head);
+#pragma endregion
+
+	
 	return 0;
 }
