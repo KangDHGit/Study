@@ -80,6 +80,30 @@ public:
 			cout << iter->data.word << "->";
 		cout << "NULL" << endl;
 	}
+
+	//202p 특정한 값을 탐색하는 함수
+	static bool contains(ListNode* head, element data) {
+		ListNode* iter = head;
+		while (iter != NULL)
+		{
+			std::string str(iter->data.word);
+			if (str.compare(data.word) == 0)
+				return true;
+			iter = iter->Link;
+		}
+		return false;
+	}
+	static ListNode* Find(ListNode* head, element data) {
+		ListNode* iter = head;
+		while (iter != NULL)
+		{
+			std::string str(iter->data.word);
+			if (str.compare(data.word) == 0)
+				return iter;
+			iter = iter->Link;
+		}
+		return NULL;
+	}
 };
 
 int main()
@@ -101,12 +125,29 @@ int main()
 	head = ListNode::insert(head, data, 1);
 	ListNode::print_list(head);					//BANANA->ORANGE->APPLE->MELON
 
-	strcpy_s(data.word, "BERRY");;
+	strcpy_s(data.word, "BERRY");
 	head = ListNode::insert(head, data, 3);
 	ListNode::print_list(head);					//BANANA->ORANGE->APPLE->BERRY->MELON
 
 	head = ListNode::delete_Node(head, 3);
 	ListNode::print_list(head);					//BANANA->ORANGE->APPLE->MELON
+
+	strcpy_s(data.word, "ORANGE");
+	if (ListNode::contains(head, data))
+		cout << "리스트에서 " << data.word << "를 찾았습니다." << endl;
+	else
+		cout << "리스트에서" << data.word << "를 찾지 못했습니다" << endl;
+
+	strcpy_s(data.word, "BERRY");
+	if (ListNode::contains(head, data))
+		cout << "리스트에서 " << data.word << "를 찾았습니다." << endl;
+	else
+		cout << "리스트에서 " << data.word << "를 찾지 못했습니다" << endl;
+
+	if(ListNode::Find(head, data) != NULL)
+		cout << "리스트에서 " << data.word << "를 찾았습니다." << endl;
+	else
+		cout << "리스트에서 " << data.word << "를 찾지 못했습니다" << endl;
 
 	return 0;
 }

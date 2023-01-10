@@ -151,7 +151,7 @@
     <ClCompile Include="p187_singly_linked_list.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="p200_word_linked_list.cpp">
+    <ClCompile Include="p200_linked_list_LAb.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
