@@ -117,6 +117,27 @@ public:
 			return head1;
 		}
 	}
+	//p206 리스트를 역순으로 만들기
+	static ListNode* Reverse(ListNode* head) {
+		ListNode* r_head = NULL;		//역순으로 만든 리스트의 헤드가 될 포인터
+		ListNode* r_nodes;				//역순으로 만드는 리스트의 노드들(r_head의 다음애들)
+		ListNode* iter = head;			//head부터 정순으로 돌면서 노드들을 넘겨주는 포인터
+		// 최종은 r_head->r_nodes.....->NULL 의 모습으로 만들기위함
+		while (iter != NULL)		//전부 반전으로 만들었는지 확인
+		{
+			r_nodes = r_head;		//전부 역순으로 만든것이 아니기때문에 r_nodes에게 노드를 넘김
+			r_head = iter;			//반전할 노드를 새로운 헤드에 넘겨주기
+			iter = iter->Link;		//반전할 다음 노드로 이동(연결 끊기)
+			r_head->Link = r_nodes;	//거꾸로 연결
+			//순서주의(잘못된 순서)!
+			//r_nodes = r_head;	
+			//r_head = iter;		
+			//r_head->Link = r_nodes; //아직 iter이 r_head랑 같은 값의 주소를 가지고 있기 때문에
+			//iter = iter->Link;	  
+		}
+		cout << "Reverse..." << endl;
+		return r_head;
+	}
 };
 
 int main()
@@ -176,6 +197,11 @@ int main()
 	cout << "head : "; ListNode::print_list(head);
 	cout << "head2 : "; ListNode::print_list(head2);
 	head = ListNode::Concat_List(head, head2);
+	cout << "head : "; ListNode::print_list(head);
+#pragma endregion
+	
+#pragma region p206 리스트 반전
+	head = ListNode::Reverse(head);
 	cout << "head : "; ListNode::print_list(head);
 #pragma endregion
 
