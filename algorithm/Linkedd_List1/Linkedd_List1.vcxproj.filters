@@ -27,5 +27,8 @@
     <ClCompile Include="p200_linked_list_LAb.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p212_linked_list_polynomail.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
