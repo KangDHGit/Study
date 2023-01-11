@@ -233,8 +233,8 @@ public:
 		{
 			deque.add_rear(word[j]);
 		}
-		int count = wordindex / 2;
-		for (int i = 0; i < count; i++)
+		int size = wordindex / 2;
+		for (int i = 0; i < size; i++)
 		{
 			cout << deque.peek_front() << " | " << deque.peek_rear() << endl;
 			if (deque.delete_front() != deque.delete_rear())

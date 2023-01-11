@@ -19,7 +19,7 @@ public:
 public:
 	int GetSize() { return size; }
 	ListType() :size(0) { head = NULL; tail = NULL; }
-	void Add(const int coef, const int expon) {
+	void Push_back(const int coef, const int expon) {
 		ListNode* new_node = new ListNode{ coef, expon, NULL };
 		if (new_node == NULL) { cout << "메모리 할당 에러" << endl; return; }
 
@@ -54,7 +54,7 @@ public:
 			switch (CompareExpon(iterA, iterB))
 			{
 			case 1:	//A의 지수가 B의 지수보다 클때
-				resultList->Add(iterA->coef, iterA->expon);
+				resultList->Push_back(iterA->coef, iterA->expon);
 				iterA = iterA->Link;
 				break;
 			case 0: //A와 B의 지수가 같을때
@@ -62,7 +62,7 @@ public:
 				int sumCoef = iterA->coef + iterB->coef;
 				if (sumCoef == 0) break;
 				else {
-					resultList->Add(sumCoef, iterA->expon);
+					resultList->Push_back(sumCoef, iterA->expon);
 					iterA = iterA->Link;
 					iterB = iterB->Link;
 					break;
@@ -70,7 +70,7 @@ public:
 				break;
 			}
 			case -1: //A의 지수가 B의 지수보다 작을때
-				resultList->Add(iterB->coef, iterB->expon);
+				resultList->Push_back(iterB->coef, iterB->expon);
 				iterB = iterB->Link;
 				break;
 			default:
@@ -81,13 +81,13 @@ public:
 
 		while (iterA != NULL)
 		{
-			resultList->Add(iterA->coef, iterA->expon);
+			resultList->Push_back(iterA->coef, iterA->expon);
 			iterA = iterA->Link;
 		}
 
 		while (iterB != NULL)
 		{
-			resultList->Add(iterB->coef, iterB->expon);
+			resultList->Push_back(iterB->coef, iterB->expon);
 			iterB = iterB->Link;
 		}
 
@@ -112,14 +112,14 @@ int main()
 {
 	ListType* listA = new ListType , * listB = new ListType, * listC = new ListType;
 
-	listA->Add(3, 12);
-	listA->Add(2, 8);
-	listA->Add(1, 0);
+	listA->Push_back(3, 12);
+	listA->Push_back(2, 8);
+	listA->Push_back(1, 0);
 
-	listB->Add(8, 12);
-	listB->Add(-3, 10);
-	listB->Add(-5, 8);
-	listB->Add(10, 6);
+	listB->Push_back(8, 12);
+	listB->Push_back(-3, 10);
+	listB->Push_back(-5, 8);
+	listB->Push_back(10, 6);
 
 	PolyCal::Print_poly(listA);
 	PolyCal::Print_poly(listB);

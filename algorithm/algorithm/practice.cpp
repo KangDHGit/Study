@@ -25,14 +25,14 @@ void recursive_10(int n)
 	cout << n << endl;
 }
 
-void asterisk_11(int i, int& count)
+void asterisk_11(int i, int& size)
 {
 	if (i > 1)
 	{
-		asterisk_11(i / 2, count);
-		asterisk_11(i / 2, count);
+		asterisk_11(i / 2, size);
+		asterisk_11(i / 2, size);
 	}
-	cout << "*"; count++;
+	cout << "*"; size++;
 }
 
 void unknown()
@@ -77,14 +77,14 @@ int bc(int n, int k)
 	else return (bc(n - 1, k - 1) + bc(n - 1, k));
 }
 
-int Ackermann_18_recu(int m, int n, int& count)
+int Ackermann_18_recu(int m, int n, int& size)
 {
-	++count;
+	++size;
 	cout << "m : " << m << " n : " << n << endl;
 	if (m == 0) return n + 1;
-	else if (n == 0) return Ackermann_18_recu(m - 1, 1,count);
+	else if (n == 0) return Ackermann_18_recu(m - 1, 1,size);
 	else
-		return Ackermann_18_recu(m - 1, Ackermann_18_recu(m, n - 1,count),count);
+		return Ackermann_18_recu(m - 1, Ackermann_18_recu(m, n - 1,size),size);
 }
 
 int Ackermann_18_iter(int m, int n)
