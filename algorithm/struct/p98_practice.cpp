@@ -29,8 +29,8 @@ void print_two_power()
 
 //5¹ø
 struct person {
-	char name[10];
-	int age;
+	char _name[10];
+	int _age;
 	float pay;
 };
 

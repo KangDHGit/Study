@@ -7,10 +7,10 @@ using std::cin;
 
 #define MAX_QUEUE_SIZE 5
 
-typedef	int element;
+typedef	int Data;
 #pragma region CircularQueue
 class QueueType {
-	element data[MAX_QUEUE_SIZE];
+	Data data[MAX_QUEUE_SIZE];
 	int front;
 	int rear;
 public:
@@ -20,30 +20,30 @@ public:
 	bool is_full() { return (rear + 1) % MAX_QUEUE_SIZE == front; }
 	bool is_empty() { return front == rear; }
 	void error(const char* messege) { cout << messege << endl; exit(1); }
-	void enquque(element item);
-	element dequque();
-	element peek();
+	void enquque(Data item);
+	Data dequque();
+	Data peek();
 	void queue_print();
 };
 void QueueType::init_data(int MAX_SIZE) {
 	for (int i = 0; i < MAX_SIZE; i++)
 		data[i] = -1;
 }
-void QueueType::enquque(element item) {
+void QueueType::enquque(Data item) {
 	if (is_full()) { error("큐가 포화상태입니다."); }
 	else {
 		rear = (rear + 1) % MAX_QUEUE_SIZE;
 		data[rear] = item;
 	}
 }
-element QueueType::dequque() {
+Data QueueType::dequque() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else {
 		front = (front + 1) % MAX_QUEUE_SIZE;
 		return data[front];
 	}
 }
-element QueueType::peek() {
+Data QueueType::peek() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else {
 		return data[front];
@@ -81,7 +81,7 @@ int main()
 	std::uniform_int_distribution<int> dis(1, 100);
 
 	QueueType q;
-	int element;
+	int Data;
 	for (int i = 0; i < 100; i++)
 	{
 		if (q.is_full()) { cout << "포화상태입니다." << endl; break; }
@@ -91,7 +91,7 @@ int main()
 		}
 		q.queue_print();
 		if (dis(gen) % 10 == 0) {
-			element = q.dequque();
+			Data = q.dequque();
 		}
 		q.queue_print();
 	}

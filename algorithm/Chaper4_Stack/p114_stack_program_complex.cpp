@@ -8,60 +8,60 @@ using std::cin;
 #define MAX_STACK_SIZE 100
 #define MAX_STRING 100
 
-class element {
+class Data {
 	int student_no;
-	char name[MAX_STRING];
+	char _name[MAX_STRING];
 	char address[MAX_STRING];
 
 public:
-	element() : student_no(0), name("empty"), address("empty") {};
-	element(int student_no, const char* name, const char* address);
+	Data() : student_no(0), _name("empty"), address("empty") {};
+	Data(int student_no, const char* _name, const char* address);
 	void print();
 };
 
-#pragma region element define
-element::element(int student_no, const char* name, const char* address)
+#pragma region Data define
+Data::Data(int student_no, const char* _name, const char* address)
 {
 	this->student_no = student_no;
-	strcpy(this->name, name);
+	strcpy(this->_name, _name);
 	strcpy(this->address, address);
 }
-void element::print()
+void Data::print()
 {
 	cout << "====================" << endl;
 	cout << "Student_No : " << student_no << endl;
-	cout << "Name : " << name << endl;
+	cout << "Name : " << _name << endl;
 	cout << "Address : " << address << endl;
 }
 #pragma endregion
 
 class stackType
 {
-	element data[MAX_STACK_SIZE];
+	Data data[MAX_STACK_SIZE];
 	int top;
 public:
 	stackType() : top(-1) {};
 	bool is_full();
 	bool is_empty();
-	void push(element item);
-	element pop();
-	element peek();
+	void push(Data item);
+	Data pop();
+	Data peek();
 };
 
 #pragma region stackType define
 bool stackType::is_full() { if (top == MAX_STACK_SIZE) return true; else return false; }
 bool stackType::is_empty() { if (top == -1) return true; else return false; }
-void stackType::push(element item)
+void stackType::push(Data item)
 {
 	if (is_full()) { cout << "스택 포화에러" << endl; exit(1); }
 	else { top++; data[top] = item; }
 }
-element stackType::pop()
+Data stackType::pop()
 {
 	if (is_empty()) { cout << "스택 공백에러" << endl; exit(1); }
 	else { return data[top--]; }
 }
-element stackType::peek()
+Data stackType::peek()
 {
 	if (is_empty()) { cout << "스택 공백에러" << endl; exit(1); }
 	else { return data[top]; }
@@ -73,9 +73,9 @@ int main()
 {
 	stackType class_A;
 
-	element student0{ 1,"강대한", "김포" };
-	element student1{ 2,"홍길동", "서울" };
-	element student2{ 3,"김철수", "일산" };
+	Data student0{ 1,"강대한", "김포" };
+	Data student1{ 2,"홍길동", "서울" };
+	Data student2{ 3,"김철수", "일산" };
 
 	class_A.push(student0);
 	class_A.push(student1);

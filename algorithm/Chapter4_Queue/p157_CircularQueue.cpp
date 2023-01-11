@@ -6,10 +6,10 @@ using std::cin;
 
 #define MAX_QUEUE_SIZE 5
 
-typedef	int element;
+typedef	int Data;
 
 class QueueType {
-	element data[MAX_QUEUE_SIZE];
+	Data data[MAX_QUEUE_SIZE];
 	int front;
 	int rear;
 public:
@@ -19,26 +19,26 @@ public:
 	bool is_full() { return (rear + 1) % MAX_QUEUE_SIZE == front; }
 	bool is_empty() { return front == rear; }
 	void error(const char* messege) { cout << messege << endl; exit(1); }
-	void enquque(element item);
-	element dequque();
-	element peek();
+	void enquque(Data item);
+	Data dequque();
+	Data peek();
 	void queue_print();
 };
 void QueueType::init_data(int MAX_SIZE) {
 	for (int i = 0; i < MAX_SIZE; i++)
 		data[i] = -1;
 }
-void QueueType::enquque(element item) {
+void QueueType::enquque(Data item) {
 	if (is_full()) { error("큐가 포화상태입니다."); }
 	else {
 		rear = (rear + 1) % MAX_QUEUE_SIZE; data[rear] = item;
 	}
 }
-element QueueType::dequque() {
+Data QueueType::dequque() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else { front = (front + 1 ) % MAX_QUEUE_SIZE; return data[front]; }
 }
-element QueueType::peek() {
+Data QueueType::peek() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else {
 		int result = (front + 1) % MAX_QUEUE_SIZE;
@@ -68,17 +68,17 @@ void QueueType::queue_print() {
 int main()
 {
 	QueueType q;
-	int element;
+	int Data;
 	cout << "--데이터 추가 단계--" << endl;
 	while (!q.is_full())
 	{
-		cout << "정수를 입력하시오 : "; cin >> element;
-		q.enquque(element);
+		cout << "정수를 입력하시오 : "; cin >> Data;
+		q.enquque(Data);
 		q.queue_print();
 		if (q.is_full())
 		{
-			element = q.dequque();
-			cout << "꺼내진 정수 : " << element << endl;
+			Data = q.dequque();
+			cout << "꺼내진 정수 : " << Data << endl;
 			q.queue_print();
 		}
 	}
@@ -86,8 +86,8 @@ int main()
 
 	while (!q.is_empty())
 	{
-		element = q.dequque();
-		cout << "꺼내진 정수 : " << element << endl;
+		Data = q.dequque();
+		cout << "꺼내진 정수 : " << Data << endl;
 		q.queue_print();
 	}
 	cout << "큐는 공백상태 입니다." << endl;

@@ -8,29 +8,29 @@ using std::cin;
 
 #define MAX_STRING 100
 
-class element {
+class Data {
 	int student_no;
-	char name[MAX_STRING];
+	char _name[MAX_STRING];
 	char address[MAX_STRING];
 
 public:
-	element() : student_no(0), name("empty"), address("empty") {};
-	element(int student_no, const char* name, const char* address);
-	char* getName() { return name; }
+	Data() : student_no(0), _name("empty"), address("empty") {};
+	Data(int student_no, const char* _name, const char* address);
+	char* getName() { return _name; }
 	void print();
 };
 
-#pragma region element define
-element::element(int student_no, const char* name, const char* address)
+#pragma region Data define
+Data::Data(int student_no, const char* _name, const char* address)
 {
 	this->student_no = student_no;
-	strcpy(this->name, name);
+	strcpy(this->_name, _name);
 	strcpy(this->address, address);
 }
-void element::print()
+void Data::print()
 {
 	cout << "Student_No : " << student_no << endl;
-	cout << "Name : " << name << endl;
+	cout << "Name : " << _name << endl;
 	cout << "Address : " << address << endl;
 	cout << "====================" << endl;
 }
@@ -38,7 +38,7 @@ void element::print()
 
 class stackType
 {
-	element *data;	//동적할당을 위해 포인터로 선언
+	Data *data;	//동적할당을 위해 포인터로 선언
 	int capacity;	//현재크기
 	int top;
 public:
@@ -48,9 +48,9 @@ public:
 	stackType() { init_stack(); };
 	bool is_full();
 	bool is_empty();
-	void push(element item);
-	element pop();
-	element peek();
+	void push(Data item);
+	Data pop();
+	Data peek();
 	~stackType() { delete_stack(); }
 };
 
@@ -62,14 +62,14 @@ void stackType::init_stack()
 		delete_stack();
 		cout << "기존데이터를 삭제했습니다." << endl;
 	}
-	data = new element[1];
+	data = new Data[1];
 	capacity = 1;
 	top = -1;
 	cout << "스택 초기화 완료" << endl;
 }
 bool stackType::resize_stack(int& cap)
 {
-	element* new_mem = new element[cap];			//새로운 공간 할당
+	Data* new_mem = new Data[cap];			//새로운 공간 할당
 	if (new_mem == NULL) return false;				//할당된 공간이 NULL인지 확인
 	else {
 		std::copy(&data[0], &data[top+1], new_mem);	//할당된 공간에 기존데이터 복사
@@ -80,7 +80,7 @@ bool stackType::resize_stack(int& cap)
 }
 bool stackType::is_full() { if (top == capacity - 1) return true; else return false; }
 bool stackType::is_empty() { if (top == -1) return true; else return false; }
-void stackType::push(element item)
+void stackType::push(Data item)
 {
 	if (is_full()) { 
 		cout << "스택공간을 추가 확보 합니다." << endl; 
@@ -96,12 +96,12 @@ void stackType::push(element item)
 	cout << data[top].getName() << "님 추가 성공" << endl;
 	cout << "====================" << endl;
 }
-element stackType::pop()
+Data stackType::pop()
 {
 	if (is_empty()) { cout << "스택 공백에러" << endl; delete_stack(); exit(1); }
 	else { return data[top--]; }
 }
-element stackType::peek()
+Data stackType::peek()
 {
 	if (is_empty()) { cout << "스택 공백에러" << endl; delete_stack(); exit(1); }
 	else { return data[top]; }
@@ -114,10 +114,10 @@ int main()
 	stackType class_A;
 
 
-	element student0{ 1,"강바람", "서울" };
-	element student1{ 2,"홍길동", "김포" };
-	element student2{ 3,"김철수", "일산" };
-	element student3{ 4,"김영희", "인천" };
+	Data student0{ 1,"강바람", "서울" };
+	Data student1{ 2,"홍길동", "김포" };
+	Data student2{ 3,"김철수", "일산" };
+	Data student3{ 4,"김영희", "인천" };
 
 	class_A.push(student0);
 	class_A.push(student1);

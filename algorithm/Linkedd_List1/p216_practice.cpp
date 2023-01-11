@@ -1,8 +1,11 @@
 #include<iostream>
+#include<tuple>
 
 using std::cout;
 using std::endl;
 using std::cin;
+using std::string;
+using std::tuple;
 
 //9. 연결리스트 입력, 출력
 //10.리스트의 노드 개수 계산
@@ -229,6 +232,71 @@ public:
 };
 #pragma endregion
 
+#pragma region question14
+typedef class Data
+{
+	string _name;
+	int _age;
+	float _heigh;
+public:
+	Data* Link;
+	Data() : _name("Empty"), _age(-1), _heigh(-1) {};
+	Data(Data* person);
+	Data(string name, int age, float heigh) : _name(name), _age(age), _heigh(heigh) {};
+	void SetName(string name) { _name = name; }
+	void SetAge(int age) { _age = age; }
+	void SetHeigh(float heigh) { _heigh = heigh; }
+	void SetInfo(int age = -1, float heigh = -1);
+	void SetInfo(tuple<string, int, float> info);
+
+	string GetName() const { return _name; }
+	int GetAge() const { return _age; }
+	float GetHeigh() const { return _heigh; }
+	tuple<string, int, float> GetInfo();
+}Person;
+
+Data::Data(Data* data) {
+	
+}
+void Data::SetInfo(tuple<string, int, float> info) {
+
+}
+void Data::SetInfo(int age, float heigh) {
+	if (age != -1) { _age = age; }
+	if (heigh != -1) { _heigh = heigh; }
+}
+tuple<string, int, float> Data::GetInfo() {
+	tuple<string, int, float> info = std::make_tuple(_name, _age, _heigh);
+	return info;
+}
+
+class ListType_Person {
+	Person* head;
+	Person* tail;
+	int size;
+public:
+	ListType_Person() :size(0) { head = NULL; tail = NULL; }
+	void Push_front(Person* data);
+	void Push_back(Person* data);
+	Person Pop_front();
+	Person Pop_back();
+	int GetSize() const { return size; }
+};
+void ListType_Person::Push_front(Person* data) {
+	if (head == NULL) { head = data; tail = data; }
+	else {
+		Person* new_head = new Person(data);
+	}
+	size++;
+}
+
+#pragma endregion
+
+class Test {
+public:
+	int a;
+	int b;
+};
 
 int main()
 {
@@ -240,7 +308,16 @@ int main()
 	q11.run();*/
 	/*Question_12 q12;
 	q12.run();*/
-	Question_13 q13;
-	q13.run();
+	/*Question_13 q13;
+	q13.run();*/
+	Test A{ 1,2 };
+	Test B;
+	B = A;
+	cout << A.a << " " << A.b << endl;
+	cout << B.a << " " << B.b << endl;
+	A.a = 7;
+	cout << A.a << " " << A.b << endl;
+	cout << B.a << " " << B.b << endl;
+
 	return 0;
 }

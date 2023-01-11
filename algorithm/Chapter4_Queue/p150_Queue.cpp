@@ -6,10 +6,10 @@ using std::cin;
 
 #define MAX_QUEUE_SIZE 5
 
-typedef	int element;
+typedef	int Data;
 
 class QueueType {
-	element data[MAX_QUEUE_SIZE];
+	Data data[MAX_QUEUE_SIZE];
 	int front;
 	int rear;
 public:
@@ -18,22 +18,22 @@ public:
 	bool is_full() { return rear == MAX_QUEUE_SIZE - 1; }
 	bool is_empty() { return front == rear; }
 	void error(const char* messege) { cout << messege << endl; exit(1); }
-	void enquque(element item);
-	element dequque();
-	element peek();
+	void enquque(Data item);
+	Data dequque();
+	Data peek();
 	void queue_print();
 };
-void QueueType::enquque(element item) {
+void QueueType::enquque(Data item) {
 	if (is_full()) { error("큐가 포화상태입니다."); }
 	else {
 		rear++; data[rear] = item;
 	}
 }
-element QueueType::dequque() {
+Data QueueType::dequque() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else { front++; return data[front]; }
 }
-element QueueType::peek() {
+Data QueueType::peek() {
 	if (is_empty()) { error("큐가 공백상태입니다."); return -1; }
 	else { return data[front]; }
 }

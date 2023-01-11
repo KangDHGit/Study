@@ -4,16 +4,16 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-struct element {
+struct Data {
 	char word[20];
 };
 
 class ListNode {
 public:
-	element data;
+	Data data;
 	ListNode* Link;
 	ListNode() { Link = NULL; }
-	static ListNode* insert_first(ListNode* head, element data) {
+	static ListNode* insert_first(ListNode* head, Data data) {
 		ListNode* new_head = new ListNode;
 		new_head->data = data;
 		new_head->Link = head;
@@ -27,7 +27,7 @@ public:
 		return head;
 	}
 
-	static ListNode* insert(ListNode* head, element data, int index) {
+	static ListNode* insert(ListNode* head, Data data, int index) {
 		if (index == 0)
 			head = insert_first(head, data);
 
@@ -46,7 +46,7 @@ public:
 		pre->Link = new_Node;
 		return head;
 	}
-	static ListNode* add(ListNode* head, element data) {
+	static ListNode* add(ListNode* head, Data data) {
 		ListNode* iter = head;			
 		if (iter == NULL) { return insert_first(head, data); }
 
@@ -82,7 +82,7 @@ public:
 	}
 
 	//p202 특정한 값을 탐색하는 함수
-	static bool contains(ListNode* head, element data) {
+	static bool contains(ListNode* head, Data data) {
 		ListNode* iter = head;
 		while (iter != NULL)
 		{
@@ -93,7 +93,7 @@ public:
 		}
 		return false;
 	}
-	static ListNode* Find(ListNode* head, element data) {
+	static ListNode* Find(ListNode* head, Data data) {
 		ListNode* iter = head;
 		while (iter != NULL)
 		{
@@ -144,7 +144,7 @@ int main()
 {
 #pragma region p200 단어를 저장하는 리스트
 	ListNode* head = NULL;
-	element data{ "APPLE" };
+	Data data{ "APPLE" };
 	head = ListNode::insert_first(head, data);
 	ListNode::print_list(head);
 
@@ -190,7 +190,7 @@ int main()
 
 #pragma region p204 두개의 리스트를 합치는 함수
 	ListNode* head2 = NULL;
-	element data2{ "KIWI" };
+	Data data2{ "KIWI" };
 	head2 = ListNode::insert_first(head2, data2);
 	strcpy_s(data2.word, "TOMATO");
 	head2 = ListNode::add(head2, data2);

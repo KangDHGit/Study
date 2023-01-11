@@ -4,11 +4,11 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-typedef int element;
+typedef int Data;
 
 class ArrayListType {
 	const static int MAX_LIST_SIZE = 100;
-	element arr[MAX_LIST_SIZE];
+	Data arr[MAX_LIST_SIZE];
 	int size;
 
 public:
@@ -18,16 +18,16 @@ public:
 	ArrayListType() { init(); }
 	bool is_empty() { return size == 0; }
 	bool is_full() { return size == MAX_LIST_SIZE; }
-	element get_entry(int index);
+	Data get_entry(int index);
 	void print_list();
-	void insert_Last(element item);
-	void insert(int index, element item);
-	element deleteItem(int index);
+	void insert_Last(Data item);
+	void insert(int index, Data item);
+	Data deleteItem(int index);
 };
 
 #pragma region ArrayListType_Define
 //해당 인덱스 자료 가져오기
-element ArrayListType::get_entry(int index) {
+Data ArrayListType::get_entry(int index) {
 	if (index < 0 || index > MAX_LIST_SIZE)
 		error("위치 입력오류");
 	else
@@ -38,12 +38,12 @@ void ArrayListType::print_list() {
 		cout << arr[i] << "->";
 	cout << endl;
 }
-void ArrayListType::insert_Last(element item) {
+void ArrayListType::insert_Last(Data item) {
 	if (size >= MAX_LIST_SIZE)
 		error("리스트 오버플로우");
 	arr[size] = item; size++;
 }
-void ArrayListType::insert(int index, element item) {
+void ArrayListType::insert(int index, Data item) {
 	if (!is_full() && index >= 0 && index <= size) {	//2 3 4, 0 1 3 4 
 		for (int i = size - 1; i >= index; i--)
 			arr[i + 1] = arr[i];
@@ -52,10 +52,10 @@ void ArrayListType::insert(int index, element item) {
 	}
 }
 
-element ArrayListType::deleteItem(int index) {
-	element result;
+Data ArrayListType::deleteItem(int index) {
+	Data result;
 	if (index >= 0 && index < size) {
-		element result = arr[index];
+		Data result = arr[index];
 		for (int i = index; i < size - 1; i++) // 3, 0 1 2 3 4 , 0 1 2 4
 			arr[i] = arr[i + 1];
 		size--;

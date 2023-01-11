@@ -4,18 +4,18 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-struct element {
+struct Data {
 	short r;
 	short c;
 public:
-	element() {};
-	element(short row, short col) : r(row), c(col) {};
+	Data() {};
+	Data(short row, short col) : r(row), c(col) {};
 	void print() { cout << r << ", " << c << " "; }
 };
 
 class stackType
 {
-	element* data;		//동적할당을 위해 포인터로 선언
+	Data* data;		//동적할당을 위해 포인터로 선언
 	int capacity;	//현재크기
 	int top;
 public:
@@ -25,9 +25,9 @@ public:
 	stackType() { init_stack(); };
 	bool is_full() const;
 	bool is_empty() const;
-	void push(element item);
-	element pop();
-	element peek();
+	void push(Data item);
+	Data pop();
+	Data peek();
 	void printstack();
 	~stackType() { delete_stack(); }
 };
@@ -35,12 +35,12 @@ public:
 #pragma region stackType define
 void stackType::init_stack() {
 	if (data != NULL) { delete[] data; cout << "기존 데이터를 삭제 했습니다." << endl; }
-	data = new element[1];
+	data = new Data[1];
 	top = -1; capacity = 1;
 	cout << "스택을 초기화 했습니다." << endl;
 }
 bool stackType::resize_stack(int& cap) {
-	element* new_mem = new element[cap];
+	Data* new_mem = new Data[cap];
 	if (new_mem == NULL) return false;
 	else {
 		std::copy(&data[0], &data[top + 1], new_mem);
@@ -51,7 +51,7 @@ bool stackType::resize_stack(int& cap) {
 }
 bool stackType::is_full() const { return top == capacity - 1; }
 bool stackType::is_empty() const { return top == -1; }
-void stackType::push(element item) {
+void stackType::push(Data item) {
 	if (is_full()) {
 		/*cout << "스택 공간을 추가확보 합니다." << endl;*/
 		int cap = capacity * 2;
@@ -65,11 +65,11 @@ void stackType::push(element item) {
 	data[top] = item;
 	//item.print();
 }
-element stackType::pop() {
+Data stackType::pop() {
 	if (is_empty()) { cout << "스택 공백에러!" << endl; exit(1); }
 	else { return data[top--]; }
 }
-element stackType::peek() {
+Data stackType::peek() {
 	if (is_empty()) { cout << "스택 공백에러!" << endl; exit(1); }
 	else { return data[top]; }
 }
@@ -83,7 +83,7 @@ void stackType::printstack() {
 class maze
 {
 	const static int size = 6;
-	element entry;
+	Data entry;
 public:
 	char map[size][size] = {
 		{'1','1','1','1','1','1'},
@@ -95,7 +95,7 @@ public:
 	};
 public:
 	maze() : entry(1, 0) {};
-	element getEntry() { return entry; }
+	Data getEntry() { return entry; }
 	void print_maze();
 };
 #pragma region maze_define
@@ -112,7 +112,7 @@ void maze::print_maze() {
 
 class mazeGame {
 	stackType stack;	//갈수있는 위치를 저장할 스택자료구조 변수
-	element here;		//미로에서의 현재 내 위치
+	Data here;		//미로에서의 현재 내 위치
 	maze miro;			//미로
 public:
 	void push_loc(int r, int c);	//갈수있는 위치인지 판단하고 스택에 저장하는 함수
@@ -123,7 +123,7 @@ public:
 void mazeGame::push_loc(int r, int c) {
 	if (r >= 0 && c >= 0) {
 		if ((miro.map[r][c] != '.') && (miro.map[r][c] != '1')) {
-			element temp(r, c);
+			Data temp(r, c);
 			stack.push(temp);
 		}
 	}

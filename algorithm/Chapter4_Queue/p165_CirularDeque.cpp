@@ -6,10 +6,10 @@ using std::cin;
 
 #define MAX_DEQUE_SIZE 5
 
-typedef int element;
+typedef int Data;
 
 class DequeType {
-	element data[MAX_DEQUE_SIZE];
+	Data data[MAX_DEQUE_SIZE];
 	int front;
 	int rear;
 public:
@@ -19,12 +19,12 @@ public:
 	DequeType() { init_deque(); }
 	bool is_full() { return (rear + 1) % MAX_DEQUE_SIZE == front; }
 	bool is_empty() { return front == rear; }
-	void add_rear(element item);
-	element delete_front();
-	element get_front();
-	void add_front(element item);
-	element delete_rear();
-	element get_rear();
+	void add_rear(Data item);
+	Data delete_front();
+	Data get_front();
+	void add_front(Data item);
+	Data delete_rear();
+	Data get_rear();
 	void print_deque();
 };
 
@@ -32,28 +32,28 @@ void DequeType::init_data(int MAX_SIZE) {
 	for (int i = 0; i < MAX_SIZE; i++)
 		data[i] = -1;
 }
-void DequeType::add_rear(element item) {
+void DequeType::add_rear(Data item) {
 	if (is_full()) { error("데크가 포화상태 입니다."); }
 	else {
 		rear = (rear + 1) % MAX_DEQUE_SIZE;
 		data[rear] = item;
 	}
 }
-element DequeType::delete_front() {
+Data DequeType::delete_front() {
 	if (is_empty()) { error("데크가 공백상태 입니다."); return -1; }
 	else {	//뒤로 이동후 삭제
 		front = (front + 1) % MAX_DEQUE_SIZE;
 		return data[front];
 	}
 }
-element DequeType::get_front() {
+Data DequeType::get_front() {
 	if (is_empty()) { error("데크가 공백상태 입니다."); return -1; }
 	else {
 		int result = (front + 1) % MAX_DEQUE_SIZE;
 		return data[result];
 	}
 }
-void DequeType::add_front(element item) {
+void DequeType::add_front(Data item) {
 	//front 변수는 rear변수와 반대로 가야함(즉 앞으로, -인덱스 방향으로)
 	if (is_full()) { error("데크가 포화상태 입니다."); }
 	else {
@@ -65,7 +65,7 @@ void DequeType::add_front(element item) {
 		front = (front - 1 + MAX_DEQUE_SIZE) % MAX_DEQUE_SIZE;
 	}
 }
-element DequeType::delete_rear() {
+Data DequeType::delete_rear() {
 	if (is_empty()) { error("데크가 공백상태 입니다."); return -1; }
 	else {									//삭제후 앞으로 이동(즉 리턴후 인덱스를 앞으로)
 		int result = rear;					//앞으로 이동 전에 리턴할 인덱스 저장
@@ -74,7 +74,7 @@ element DequeType::delete_rear() {
 		return data[result];
 	}
 }
-element DequeType::get_rear() {
+Data DequeType::get_rear() {
 	if (is_empty()) { error("데크가 공백상태 입니다."); return -1; }
 	else {									
 		return data[rear];

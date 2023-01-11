@@ -6,19 +6,19 @@ using std::cin;
 
 #define MAX_STACK_SIZE 100
 
-typedef int element;
+typedef int Data;
 
 class stackType
 {
-	element data[MAX_STACK_SIZE];
+	Data data[MAX_STACK_SIZE];
 	int top;
 public:
 	stackType() : top(-1) {};
 	bool is_full();
 	bool is_empty();
-	void push(element data);
-	element pop();
-	element peek();
+	void push(Data data);
+	Data pop();
+	Data peek();
 };
 
 #pragma region stackType define
@@ -34,7 +34,7 @@ bool stackType::is_empty()
 	else return false;
 }
 
-void stackType::push(element item)
+void stackType::push(Data item)
 {
 	if (is_full()) { cout << "스택 포화 에러" << endl; return; }
 	else
@@ -44,14 +44,14 @@ void stackType::push(element item)
 	}
 }
 
-element stackType::pop()
+Data stackType::pop()
 {
 	if (is_empty()) { cout << "스택 공백 에러" << endl; exit(1); }
 	else
 		return data[top--];
 }
 
-element stackType::peek()
+Data stackType::peek()
 {
 	if (is_empty()) { cout << "스택 공백 에러" << endl; exit(1); }
 	else

@@ -12,27 +12,27 @@ using std::get;
 #define MAX_QUEUE_SIZE 5
 
 #pragma region CUSTOMER
-typedef class element {
+typedef class Data {
 	int id;				//고객 번호
 	int arrival_time;	//은행 도착시간
 	int service_time;	//은행원이 업무처리시 걸리는 시간
 public:
 	void init() { id = arrival_time = service_time = -1; }
-	element() : id(-1), arrival_time(-1), service_time(-1) {};
-	element(int id, int arr_time, int ser_time) : id(id), arrival_time(arr_time), service_time(ser_time) {};
+	Data() : id(-1), arrival_time(-1), service_time(-1) {};
+	Data(int id, int arr_time, int ser_time) : id(id), arrival_time(arr_time), service_time(ser_time) {};
 	int get_service_time() { return service_time; }
 	int get_id() { return id; }
 	tuple<int, int, int> getinfo();
 }CUSTOMER;
 
-tuple<int, int, int> element::getinfo() {
+tuple<int, int, int> Data::getinfo() {
 	return make_tuple(id, arrival_time, service_time);
 }
 #pragma endregion
 
 #pragma region QUEUE
 typedef class queueType {
-	element data[MAX_QUEUE_SIZE];
+	Data data[MAX_QUEUE_SIZE];
 	int front;
 	int rear;
 public:
@@ -40,31 +40,31 @@ public:
 	queueType() { init_queue(); }
 	bool is_full() { return (rear + 1) % MAX_QUEUE_SIZE == front; }
 	bool is_empty() { return front == rear; }
-	void enqueue(element item);
-	element dequeue();
-	element peek();
+	void enqueue(Data item);
+	Data dequeue();
+	Data peek();
 	void print_queue();
 }QUEUE;
 
-void queueType::enqueue(element item) {
+void queueType::enqueue(Data item) {
 	if (is_full()) { cout << "큐가 포화상태 입니다." << endl; return; }
 	else {
 		rear = (rear + 1) % MAX_QUEUE_SIZE;
 		data[rear] = item;
 	}
 }
-element queueType::dequeue() {
-	if (is_empty()) { cout << "큐가 공백상태 입니다." << endl; return element(); }
+Data queueType::dequeue() {
+	if (is_empty()) { cout << "큐가 공백상태 입니다." << endl; return Data(); }
 	else {
-		element temp;
+		Data temp;
 		front = (front + 1) % MAX_QUEUE_SIZE;
 		temp = data[front];
 		data[front].init();
 		return temp;
 	}
 }
-element queueType::peek() {
-	if (is_empty()) { cout << "큐가 공백상태 입니다." << endl; return element(); }
+Data queueType::peek() {
+	if (is_empty()) { cout << "큐가 공백상태 입니다." << endl; return Data(); }
 	else {
 		int result = (front + 1) % MAX_QUEUE_SIZE;
 		return data[result];

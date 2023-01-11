@@ -6,14 +6,14 @@ using std::cin;
 
 #define MAX_TERMS 100
 
-struct element {
+struct Data {
 	int row;
 	int col;
 	int value;
 };
 
 struct SparseMatrix {
-	element data[MAX_TERMS];
+	Data data[MAX_TERMS];
 	int rows;	// 행의 개수	
 	int cols;	// 열의 개수	
 	int terms;	// 항의 개수

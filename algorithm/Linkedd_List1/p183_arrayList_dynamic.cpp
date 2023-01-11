@@ -4,10 +4,10 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-typedef int element;
+typedef int Data;
 
 class ArrayListType {
-	element* arr;						//도전문제
+	Data* arr;						//도전문제
 	int capacity;
 	int size;
 public:
@@ -21,11 +21,11 @@ public:
 	bool is_indexOver(int index) { return (index < 0 || index > size); }
 	bool resize(int cap);					//도전문제
 	void print_list();
-	void insert_first(element item);		//도전문제
-	void insert_last(element item);
-	void insert(int index, element item);
-	element get_entry(int index);
-	element deleteItem(int index);
+	void insert_first(Data item);		//도전문제
+	void insert_last(Data item);
+	void insert(int index, Data item);
+	Data get_entry(int index);
+	Data deleteItem(int index);
 	void clear();							//퀴즈(데이터만 삭제, size초기화, capacity는 그대로)
 	void replace(int indexA, int indexB);	//퀴즈 A랑 B 교환
 	int get_length() { return size; }		//퀴즈
@@ -35,7 +35,7 @@ public:
 #pragma region ArrayListType_define
 void ArrayListType::init() {
 	if (arr != NULL) { delete[] arr; cout << "기존 리스트를 삭제 했습니다." << endl; }
-	arr = new element[1];
+	arr = new Data[1];
 	if (arr == NULL) { cout << "리스트 초기화에 필요한 메모리를 할당받지 못했습니다." << endl;}
 	else {
 		size = 0; capacity = 1;
@@ -43,7 +43,7 @@ void ArrayListType::init() {
 	}
 }
 bool ArrayListType::resize(int cap) {
-	element* new_mem = new element[cap];
+	Data* new_mem = new Data[cap];
 	if (new_mem == NULL) { cout << "리스트 확장에 필요한 메모리를 할당받지 못했습니다." << endl; return false; }
 	else {
 		std::copy(&arr[0], &arr[size], new_mem);
@@ -57,7 +57,7 @@ void ArrayListType::print_list() {
 		cout << arr[i] << "->";
 	cout << endl;
 }
-void ArrayListType::insert_first(element item) {
+void ArrayListType::insert_first(Data item) {
 	if (is_full()) {
 		int new_cap = capacity * 2;
 		if (resize(new_cap)) {
@@ -72,7 +72,7 @@ void ArrayListType::insert_first(element item) {
 		arr[i] = arr[i - 1];
 	arr[0] = item; size++;
 }
-void ArrayListType::insert_last(element item) {
+void ArrayListType::insert_last(Data item) {
 	if (is_full()) {
 		int new_cap = capacity * 2;
 		if (resize(new_cap)) {
@@ -85,7 +85,7 @@ void ArrayListType::insert_last(element item) {
 	}
 	arr[size] = item; size++;
 }
-void ArrayListType::insert(int index, element item) {
+void ArrayListType::insert(int index, Data item) {
 	if (is_indexOver(index)) {
 		cout << "잘못된 인덱스 값입니다." << endl; return;
 	}
@@ -103,24 +103,24 @@ void ArrayListType::insert(int index, element item) {
 		arr[i] = arr[i - 1];
 	arr[index] = item; size++;
 }
-element ArrayListType::get_entry(int index) {
+Data ArrayListType::get_entry(int index) {
 	if (is_indexOver(index)) {
-		cout << "잘못된 인덱스 값입니다." << endl; return element{ 0 };
+		cout << "잘못된 인덱스 값입니다." << endl; return Data{ 0 };
 	}
 	return arr[index];
 }
-element ArrayListType::deleteItem(int index) {
+Data ArrayListType::deleteItem(int index) {
 	if (is_indexOver(index)) {
-		cout << "잘못된 인덱스 값입니다." << endl; return element{ 0 };
+		cout << "잘못된 인덱스 값입니다." << endl; return Data{ 0 };
 	}
-	element result = arr[index];
+	Data result = arr[index];
 	for (int i = index; i < size; i++)
 		arr[i] = arr[i + 1];
 	size--;
 	return result;
 }
 void ArrayListType::clear() {
-	element* new_mem = new element[capacity];
+	Data* new_mem = new Data[capacity];
 	if (new_mem == NULL) {
 		cout << "clear에 필요한 메모리를 할당받지 못했습니다." << endl; return;
 	}
