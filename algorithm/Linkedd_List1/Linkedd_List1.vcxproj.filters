@@ -30,5 +30,8 @@
     <ClCompile Include="p212_linked_list_polynomail.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p216_practice.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
