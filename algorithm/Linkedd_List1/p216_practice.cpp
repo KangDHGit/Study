@@ -80,6 +80,8 @@ void ListType::Clear() {
 		iter = iter->Link;
 		delete removed;
 	}
+	head = nullptr;
+	tail = nullptr;
 	size = 0;
 }
 //12번
@@ -656,6 +658,50 @@ public:
 };
 #pragma endregion
 
+//19. split 함수 작성(리스트 하나를 두개로 분리, 홀수번째 리스트, 짝수번째 리스트)
+#pragma region question19
+class Question_19 {
+	void Split(ListType* list, ListType* outlistA, ListType* outlistB) {
+		if (list == nullptr) { cout << "분리할 리스트가 NULL 입니다." << endl; return; }
+		if (outlistA == nullptr) { outlistA = new ListType; }
+		if (outlistB == nullptr) { outlistB = new ListType; }
+
+		NodeType* iter = list->GetHead();
+		bool isOdd = true;
+		while (iter != nullptr)
+		{
+			isOdd ? outlistA->Push_back(iter->data) : outlistB->Push_back(iter->data);
+			isOdd = !isOdd;
+			iter = iter->Link;
+		}
+	}
+public:
+	void Run() {
+		ListType* list = new ListType;
+		ListType* outlistA = new ListType;
+		ListType* outlistB = new ListType;
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수(10~20)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(10, 20);
+		for (int i = 1; i < random(gen); i++)
+			list->Push_back(i);
+
+		Split(list, outlistA, outlistB);
+
+		cout << "list : head : " << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
+		list->List_Print();
+		cout << "outlistA : head : " << outlistA->GetHead()->data << " tail : " << outlistA->GetTail()->data << " size : " << outlistA->GetSize() << endl;
+		outlistA->List_Print();
+		cout << "outlistB : head : " << outlistB->GetHead()->data << " tail : " << outlistB->GetTail()->data << " size : " << outlistB->GetSize() << endl;
+		outlistB->List_Print();
+	}
+};
+#pragma endregion
+
 
 
 class Test {
@@ -684,8 +730,10 @@ int main()
 	q16.run();*/
 	/*Question_17 q17;
 	q17.run();*/
-	Question_18 q18;
-	q18.run();
+	/*Question_18 q18;
+	q18.run();*/
+	Question_19 q19;
+	q19.Run();
 
 	return 0;
 }
