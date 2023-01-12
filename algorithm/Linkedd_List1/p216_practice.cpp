@@ -1,5 +1,6 @@
 #include<iostream>
 #include<tuple>
+#include<random>;
 
 using std::cout;
 using std::endl;
@@ -233,6 +234,7 @@ public:
 };
 #pragma endregion
 
+//14. name, age, height를 저장할 수 있는 단순연결 리스트
 #pragma region question14
 typedef class Data
 {
@@ -400,6 +402,60 @@ public:
 };
 #pragma endregion
 
+//15. 정열되지 않은 정수 리스트의 최대 값과 최소값을 찾는 프로그램
+#pragma region question15
+class Question_15 {
+	ListType* list;
+	bool max;
+	bool min;
+
+	int Find(ListType* list, bool compare) {
+		if (list == NULL || list->GetHead() == NULL) { cout << "리스트가 NULL 입니다." << endl; return -1; }
+
+		NodeType* iter = list->GetHead();
+		int result = iter->data;
+		iter = iter->Link;
+		while (iter != NULL)
+		{
+			if (compare) {
+				if (iter->data > result)
+					result = iter->data;
+			}
+			else {
+				if (iter->data < result)
+					result = iter->data;
+			}
+			iter = iter->Link;
+		}
+		return result;
+	}
+public:
+	Question_15() :max(true), min(false) {}
+	void run() {
+		list = new ListType;
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수(0~99)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(0, 99);
+
+		element data;
+		for (int i = 0; i < 10; i++)
+		{
+			data = random(gen);
+			list->Push_back(data);
+		}
+		list->List_Print();
+
+		int maxNum = Find(list, max);
+		int minNum = Find(list, min);
+		cout << "최대값 : " << maxNum << " 최소값 : " << minNum << endl;
+	}
+};
+#pragma endregion
+
+
 class Test {
 public:
 	int a;
@@ -418,8 +474,10 @@ int main()
 	q12.run();*/
 	/*Question_13 q13;
 	q13.run();*/
-	Question_14 q14;
-	q14.run();
+	/*Question_14 q14;
+	q14.run();*/
+	Question_15 q15;
+	q15.run();
 
 	return 0;
 }
