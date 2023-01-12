@@ -504,7 +504,7 @@ public:
 		std::uniform_int_distribution<int> random(10, 20);
 
 		int rand = random(gen);
-		for (int i = 1; i < 6; i++)
+		for (int i = 1; i < rand; i++)
 			list->Push_back(element{ i });
 
 		cout << "삭제전 : head = " << list->GetHead()->data << " tail = " << list->GetTail()->data << endl;
@@ -512,6 +512,68 @@ public:
 		oddDelete(list);
 		cout << "삭제후 : head = " << list->GetHead()->data << " tail = " << list->GetTail()->data << endl;
 		list->List_Print();
+	}
+};
+#pragma endregion
+
+//17. alternate 함수 작성(두개의 리스트를 하나씩 교차로 합치기)
+#pragma region question17
+class Question_17 {
+	ListType* listA;
+	ListType* listB;
+	ListType* Alternate(ListType* listA, ListType* listB) {
+		if (listA == nullptr) { return listB; }
+		if (listB == nullptr) { return listA; }
+
+		ListType* listC = new ListType;
+		NodeType* iterA = listA->GetHead();
+		NodeType* iterB = listB->GetHead();
+		while (iterA != nullptr && iterB != nullptr)
+		{
+			listC->Push_back(iterA->data);
+			listC->Push_back(iterB->data);
+			iterA = iterA->Link;
+			iterB = iterB->Link;
+		}
+
+		while (iterA != nullptr)
+		{
+			listC->Push_back(iterA->data);
+			iterA = iterA->Link;
+		}
+
+		while (iterB != nullptr)
+		{
+			listC->Push_back(iterB->data);
+			iterB = iterB->Link;
+		}
+		return listC;
+	}
+public:
+	void run() {
+		listA = new ListType;
+		listB = new ListType;
+
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수(5~10)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(5, 10);
+
+		for (int i = 0; i < random(gen); i++)
+			listA->Push_back(element{ i });
+		for (int i = 0; i < random(gen); i++)
+			listB->Push_back(element{ i });
+		cout << "listA : head :	" << listA->GetHead()->data << " tail : " << listA->GetTail()->data  << " size : " << listA->GetSize() << endl;
+		listA->List_Print();
+		cout << "listB : head :	" << listB->GetHead()->data << " tail : " << listB->GetTail()->data << " size : " << listB->GetSize() << endl;
+		cout << "listB : "; listB->List_Print();
+
+		ListType* list = Alternate(listA, listB);
+		cout << "list : head :	" << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
+		cout << "list : "; list->List_Print();
 	}
 };
 #pragma endregion
@@ -539,8 +601,10 @@ int main()
 	q14.run();*/
 	/*Question_15 q15;
 	q15.run();*/
-	Question_16 q16;
-	q16.run();
+	/*Question_16 q16;
+	q16.run();*/
+	Question_17 q17;
+	q17.run();
 
 	return 0;
 }
