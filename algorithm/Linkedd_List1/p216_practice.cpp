@@ -34,7 +34,7 @@ public:
 	void Push_back(element data);
 	void List_Print();
 	void Clear();
-	~ListType() { delete this; }
+	~ListType() { Clear(); delete this; }
 };
 //10번-2 구현
 int ListType::GetSize(ListType* list) {
@@ -79,7 +79,7 @@ void ListType::Clear() {
 	}
 	size = 0;
 }
-//10번
+//12번
 int ListType::Count(element data) {
 	int size = 0;
 	NodeType* iter = head;
@@ -109,13 +109,14 @@ void ListType::Pop_front() {
 	head = new_head;
 	size--;
 }
-//12번
+//13번
 void ListType::DeleteElements(element data) {
 	NodeType* preIter = head;
 	NodeType* removed = NULL;
 
-	while (preIter->data == data)
+	while (preIter->data == data) {
 		Pop_front(); preIter = head;
+	}
 
 	removed = preIter->Link;
 
@@ -237,37 +238,42 @@ typedef class Data
 {
 	string _name;
 	int _age;
-	float _heigh;
+	float _height;
 public:
 	Data* Link;
-	Data() : _name("Empty"), _age(-1), _heigh(-1) {};
-	Data(Data* person);
-	Data(string name, int age, float heigh) : _name(name), _age(age), _heigh(heigh) {};
+	Data() : _name("Empty"), _age(-1), _height(-1) { Link = NULL; };
+	Data(const Data* copy);
+	Data(string name, int age, float height) : _name(name), _age(age), _height(height) { Link = NULL; };
 	void SetName(string name) { _name = name; }
 	void SetAge(int age) { _age = age; }
-	void SetHeigh(float heigh) { _heigh = heigh; }
-	void SetInfo(int age = -1, float heigh = -1);
+	void SetHeigh(float height) { _height = height; }
+	void SetInfo(string name, int age = -1, float heigh = -1);
 	void SetInfo(tuple<string, int, float> info);
 
 	string GetName() const { return _name; }
 	int GetAge() const { return _age; }
-	float GetHeigh() const { return _heigh; }
+	float GetHeigh() const { return _height; }
 	tuple<string, int, float> GetInfo();
+	void Print();
 }Person;
 
-Data::Data(Data* data) {
-	
+Data::Data(const Data* copy) {
+	_name = copy->GetName(); _age = copy->GetAge(); _height = copy->GetHeigh();
 }
 void Data::SetInfo(tuple<string, int, float> info) {
 
 }
-void Data::SetInfo(int age, float heigh) {
+void Data::SetInfo(string name, int age, float heigh) {
+	_name = name;
 	if (age != -1) { _age = age; }
-	if (heigh != -1) { _heigh = heigh; }
+	if (heigh != -1) { _height = heigh; }
 }
 tuple<string, int, float> Data::GetInfo() {
-	tuple<string, int, float> info = std::make_tuple(_name, _age, _heigh);
+	tuple<string, int, float> info = std::make_tuple(_name, _age, _height);
 	return info;
+}
+void Data::Print() {
+	cout << "이름 : "; cout.width(5); cout << _name << " 나이 : " << _age << " 키 :	" << _height << endl;
 }
 
 class ListType_Person {
@@ -276,20 +282,122 @@ class ListType_Person {
 	int size;
 public:
 	ListType_Person() :size(0) { head = NULL; tail = NULL; }
-	void Push_front(Person* data);
-	void Push_back(Person* data);
-	Person Pop_front();
-	Person Pop_back();
+	void Push_front(Person data);
+	void Push_back(Person data);
+	void Insert(Person data, int index);
+	void Pop_front();
+	void Pop_back();
 	int GetSize() const { return size; }
+	void Clear();
+	~ListType_Person() { Clear(); }
+	void Print();
 };
-void ListType_Person::Push_front(Person* data) {
-	if (head == NULL) { head = data; tail = data; }
+void ListType_Person::Push_front(Person data) {
+	Person* new_head = new Person(data);
+	if (new_head == NULL) { cout << "메모리 할당 에러" << endl; return; }
+
+	if (head == NULL) { head = new_head; tail = new_head; }
 	else {
-		Person* new_head = new Person(data);
+		new_head->Link = head;
+		head = new_head;
 	}
 	size++;
 }
+void ListType_Person::Push_back(Person data) {
+	Person* new_tail = new Person(data);
+	if (new_tail == NULL) { cout << "메모리 할당 에러" << endl; return; }
 
+	if (head == NULL) { head = new_tail; tail = new_tail; }
+	else {
+		tail->Link = new_tail;
+		tail = new_tail;
+	}
+	size++;
+}
+void ListType_Person::Insert(Person data, int index) {
+	if (index < 0 || index > size) { cout << "잘못된 인덱스 번호 입니다." << endl; return; }
+	
+	Person* new_person = new Person(data);
+	if (new_person == NULL) { cout << "메모리 할당 에러	" << endl; return; }
+
+	if (index == 0) { Push_front(data); }
+	else if (index == size) { Push_back(data); }
+	else {
+		Person* pre = head;
+		for (int i = 1; i < index; i++)
+			pre = pre->Link;
+		new_person->Link = pre->Link;
+		pre->Link = new_person;
+	}
+	size++;
+}
+void ListType_Person::Pop_front() {
+	if (head == NULL) { cout << "리스트가 NULL 입니다." << endl; return; }
+	else {
+		Person* new_head = head->Link;
+		delete head;
+		head = new_head;
+		size--;
+	}
+}
+void ListType_Person::Pop_back() {
+	if (head == NULL) { cout << "리스트가 NULL 입니다." << endl; return; }
+	else {
+		Person* new_tail = head;
+		while (new_tail->Link != NULL)
+			new_tail = new_tail->Link;
+		delete tail;
+		tail = new_tail;
+		size--;
+	}
+}
+void ListType_Person::Clear() {
+	Person* iter = head;
+	Person* removed;
+	while (iter !=NULL)
+	{
+		removed = iter;
+		iter = iter->Link;
+		delete removed;
+	}
+	size = 0;
+}
+void ListType_Person::Print() {
+	Person* iter = head;
+	int index = 0;
+	cout << "==========리스트 출력==========" << endl;
+	while (iter != NULL)
+	{
+		cout << index << "번 "; iter->Print();
+		index++;
+		iter = iter->Link;
+	}
+	cout << "==============================" << endl;
+}
+class Question_14 {
+public:
+	void run() {
+		ListType_Person* list = new ListType_Person;
+
+		Person person;
+		//person.SetInfo("lee", 48, 1.4);
+		//list->Push_front(person);
+		
+		person.SetInfo("park", 27, 1.2);
+		list->Push_front(person);
+
+		person.SetInfo("kim", 34, 1.7);
+		list->Push_front(person);
+
+		person.SetInfo("choi", 30, 1.3);
+		list->Push_back(person);
+
+		person.SetInfo("lee", 48, 1.4);
+		list->Insert(person, 2);
+
+		list->Print();
+	}
+};
 #pragma endregion
 
 class Test {
@@ -310,14 +418,8 @@ int main()
 	q12.run();*/
 	/*Question_13 q13;
 	q13.run();*/
-	Test A{ 1,2 };
-	Test B;
-	B = A;
-	cout << A.a << " " << A.b << endl;
-	cout << B.a << " " << B.b << endl;
-	A.a = 7;
-	cout << A.a << " " << A.b << endl;
-	cout << B.a << " " << B.b << endl;
+	Question_14 q14;
+	q14.run();
 
 	return 0;
 }
