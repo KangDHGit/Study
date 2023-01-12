@@ -566,17 +566,96 @@ public:
 			listA->Push_back(element{ i });
 		for (int i = 0; i < random(gen); i++)
 			listB->Push_back(element{ i });
-		cout << "listA : head :	" << listA->GetHead()->data << " tail : " << listA->GetTail()->data  << " size : " << listA->GetSize() << endl;
+		cout << "listA : head : " << listA->GetHead()->data << " tail : " << listA->GetTail()->data  << " size : " << listA->GetSize() << endl;
 		listA->List_Print();
-		cout << "listB : head :	" << listB->GetHead()->data << " tail : " << listB->GetTail()->data << " size : " << listB->GetSize() << endl;
-		cout << "listB : "; listB->List_Print();
+		cout << "listB : head : " << listB->GetHead()->data << " tail : " << listB->GetTail()->data << " size : " << listB->GetSize() << endl;
+		listB->List_Print();
 
 		ListType* list = Alternate(listA, listB);
-		cout << "list : head :	" << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
-		cout << "list : "; list->List_Print();
+		cout << "list : head : " << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
+		list->List_Print();
 	}
 };
 #pragma endregion
+
+//18. merge 함수 작성(오름차순으로 정렬되 있는 두개의 리스트를 정렬을 유지고 합치기)
+#pragma region question18
+class Question_18 {
+	ListType* listA;
+	ListType* listB;
+public:
+	ListType* Merge(ListType* listA, ListType* listB) {
+		if (listA == nullptr) { return listB; }
+		if (listB == nullptr) { return listA; }
+
+		ListType* list = new ListType;
+		NodeType* iterA = listA->GetHead();
+		NodeType* iterB = listB->GetHead();
+		while (iterA != nullptr && iterB != nullptr)
+		{
+			if (iterA->data == iterB->data) {
+				list->Push_back(iterA->data);
+				list->Push_back(iterB->data);
+				iterA = iterA->Link;
+				iterB = iterB->Link;
+			}
+			else if (iterA->data < iterB->data) {
+				list->Push_back(iterA->data);
+				iterA = iterA->Link;
+			}
+			else {
+				list->Push_back(iterB->data);
+				iterB = iterB->Link;
+			}
+		}
+		while (iterA != nullptr)
+		{
+			list->Push_back(iterA->data);
+			iterA = iterA->Link;
+		}
+		while (iterB != nullptr)
+		{
+			list->Push_back(iterB->data);
+			iterB = iterB->Link;
+		}
+		return list;
+	}
+	void run() {
+		listA = new ListType;
+		listB = new ListType;
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수(5~10)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> randomCount(5, 10);
+		std::uniform_int_distribution<int> randomPlus(1, 3);
+
+		int num = 0;
+		for (int i = 0; i < randomCount(gen); i++) {
+			num += randomPlus(gen);
+			listA->Push_back(num);
+		}
+		
+		num = 0;
+		for (int i = 0; i < randomCount(gen); i++) {
+			num += randomPlus(gen);
+			listB->Push_back(num);
+		}
+
+		cout << "listA : head : " << listA->GetHead()->data << " tail : " << listA->GetTail()->data << " size : " << listA->GetSize() << endl;
+		listA->List_Print();
+		cout << "listB : head : " << listB->GetHead()->data << " tail : " << listB->GetTail()->data << " size : " << listB->GetSize() << endl;
+		listB->List_Print();
+
+		ListType* list = Merge(listA, listB);
+		cout << "list : head : " << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
+		list->List_Print();
+	}
+};
+#pragma endregion
+
 
 
 class Test {
@@ -603,8 +682,10 @@ int main()
 	q15.run();*/
 	/*Question_16 q16;
 	q16.run();*/
-	Question_17 q17;
-	q17.run();
+	/*Question_17 q17;
+	q17.run();*/
+	Question_18 q18;
+	q18.run();
 
 	return 0;
 }
