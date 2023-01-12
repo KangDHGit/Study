@@ -659,6 +659,95 @@ public:
 #pragma endregion
 
 //19. split 함수 작성(리스트 하나를 두개로 분리, 홀수번째 리스트, 짝수번째 리스트)
+
+//20. 다항식을 연결리스트로 나타내고 두 다항식의 합을 구하기
+struct Term
+{
+	int coef;	//계수
+	int expon;	//지수(거듭제곱)
+};
+struct NodeTerm {
+	Term term;
+	NodeTerm* link;
+};
+
+class Polynomail {
+	NodeTerm* head;
+	NodeTerm* tail;
+	int size;
+public:
+	void init() { size = 0; head = nullptr; tail = nullptr; }
+	Polynomail() { init(); }
+	NodeTerm* Gethead() const { return head; }
+	void Clear();
+	void Pushback(Term term);
+};
+
+void Polynomail::Clear() {
+	NodeTerm* iter = head;
+	NodeTerm* removed = nullptr;
+	while (iter != nullptr)
+	{
+		removed = iter;
+		iter = iter->link;
+		delete removed;
+	}
+	init();
+}
+void Polynomail::Pushback(Term term) {
+	NodeTerm* new_tail = new NodeTerm{ term, nullptr };
+	if (new_tail == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+
+	if (head == nullptr) { head = new_tail; tail = new_tail; }
+	else{
+		tail->link = new_tail;
+		tail = new_tail;
+	}
+	size++;
+}
+class Calc {
+	const static short ExponCompare(Term a, Term b) {
+		if (a.expon > b.expon)
+			return 1;
+		else if (a.expon == b.expon)
+			return 0;
+		else
+			return -1;
+	}
+public:
+	static Polynomail* Sum(Polynomail* polyA, Polynomail* polyB) {
+		if (polyA == nullptr) { return polyB; }
+		if (polyB == nullptr) { return polyA; }
+
+		Polynomail* poly = new Polynomail;
+		if (poly == nullptr) { cout << "메모리 할당 에러" << endl; return nullptr; }
+
+		NodeTerm* iterA = polyA->Gethead();
+		NodeTerm* iterB = polyB->Gethead();
+
+		while (iterA != nullptr && iterB != nullptr)
+		{
+			const short compare = ExponCompare(iterA->term, iterB->term);
+			int coef;
+			int expon;
+			switch (compare)
+			{
+			case 1 :
+				break;
+			case 0:
+				coef = iterA->term.coef + iterB->term.coef;
+				expon = iterA->term.expon;
+				poly->Pushback(Term{ coef, expon });
+				iterA = iterA->link;
+				iterB = iterB->link;
+				break;
+			case -1:
+				break;
+			}
+		}
+	}
+};
+
 #pragma region question19
 class Question_19 {
 	void Split(ListType* list, ListType* outlistA, ListType* outlistB) {
