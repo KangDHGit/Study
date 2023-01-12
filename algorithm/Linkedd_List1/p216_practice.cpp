@@ -1,6 +1,6 @@
 #include<iostream>
 #include<tuple>
-#include<random>;
+#include<random>
 
 using std::cout;
 using std::endl;
@@ -24,10 +24,12 @@ class ListType {
 	NodeType* tail;
 	int size;
 public:
-	ListType() :size(0) { head = NULL; tail = NULL; }
+	ListType() :size(0) { head = nullptr; tail = nullptr; }
 	int GetSize() { return size; }		//10번-1	(리스트에서 개수 관리 방법)
 	NodeType* GetHead() const { return head; }
+	NodeType* GetTail() const { return tail; }
 	void Pop_front();					//13번 문제를 위해 추가(head삭제)
+	void Pop_back();					//16번 문제를 위해 추가(tail삭제)
 	static int GetSize(ListType* list);	//10번-2	(리스트를 매개변수로 받아서 계산하는 방법)
 	int GetSum();						//11번	(모든 노드 데이터의 합)
 	int Count(element data);			//12번	(data의 값과 같은 노드의 개수)
@@ -41,7 +43,7 @@ public:
 int ListType::GetSize(ListType* list) {
 	NodeType* iter = list->GetHead();
 	int size = 0;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		size++;
 		iter = iter->Link;
@@ -49,10 +51,10 @@ int ListType::GetSize(ListType* list) {
 	return size;
 }
 void ListType::Push_back(element data) {
-	NodeType* new_node = new NodeType{ data, NULL };
-	if (new_node == NULL) { cout << "메모리 할당 에러" << endl; return; }
+	NodeType* new_node = new NodeType{ data, nullptr };
+	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
 	
-	if (head == NULL) { head = new_node, tail = new_node; }
+	if (head == nullptr) { head = new_node, tail = new_node; }
 	else {
 		tail->Link = new_node;
 		tail = new_node;
@@ -62,7 +64,7 @@ void ListType::Push_back(element data) {
 //9번
 void ListType::List_Print() {
 	NodeType* iter = head;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		cout << iter->data << "->";
 		iter = iter->Link;
@@ -72,7 +74,7 @@ void ListType::List_Print() {
 void ListType::Clear() {
 	NodeType* iter = head;
 	NodeType* removed;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		removed = iter;
 		iter = iter->Link;
@@ -84,7 +86,7 @@ void ListType::Clear() {
 int ListType::Count(element data) {
 	int size = 0;
 	NodeType* iter = head;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		if (iter->data == data)
 			size++;
@@ -96,7 +98,7 @@ int ListType::Count(element data) {
 int ListType::GetSum() {
 	int total = 0;
 	NodeType* iter = head;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		total += iter->data;
 		iter = iter->Link;
@@ -104,16 +106,30 @@ int ListType::GetSum() {
 	return total;
 }
 void ListType::Pop_front() {
-	if (head == NULL) { cout << "리스트가 NULL 입니다." << endl; return; }
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	NodeType* new_head = head->Link;
 	delete head;
 	head = new_head;
 	size--;
 }
+void ListType::Pop_back() {
+	NodeType* iter = head;
+	NodeType* new_tail = nullptr;
+	if (iter == nullptr) { cout << "리스트가 NULL 입니다" << endl; return; }
+
+	while (iter->Link != nullptr)
+	{
+		new_tail = iter;
+		iter = iter->Link;
+	}
+	delete iter;
+	tail = new_tail;
+	tail->Link = nullptr;
+}
 //13번
 void ListType::DeleteElements(element data) {
 	NodeType* preIter = head;
-	NodeType* removed = NULL;
+	NodeType* removed = nullptr;
 
 	while (preIter->data == data) {
 		Pop_front(); preIter = head;
@@ -121,7 +137,7 @@ void ListType::DeleteElements(element data) {
 
 	removed = preIter->Link;
 
-	while (removed != NULL)
+	while (removed != nullptr)
 	{
 		if (removed->data == data) {
 			preIter->Link = removed->Link;
@@ -243,9 +259,9 @@ typedef class Data
 	float _height;
 public:
 	Data* Link;
-	Data() : _name("Empty"), _age(-1), _height(-1) { Link = NULL; };
+	Data() : _name("Empty"), _age(-1), _height(-1) { Link = nullptr; };
 	Data(const Data* copy);
-	Data(string name, int age, float height) : _name(name), _age(age), _height(height) { Link = NULL; };
+	Data(string name, int age, float height) : _name(name), _age(age), _height(height) { Link = nullptr; };
 	void SetName(string name) { _name = name; }
 	void SetAge(int age) { _age = age; }
 	void SetHeigh(float height) { _height = height; }
@@ -283,7 +299,7 @@ class ListType_Person {
 	Person* tail;
 	int size;
 public:
-	ListType_Person() :size(0) { head = NULL; tail = NULL; }
+	ListType_Person() :size(0) { head = nullptr; tail = nullptr; }
 	void Push_front(Person data);
 	void Push_back(Person data);
 	void Insert(Person data, int index);
@@ -296,9 +312,9 @@ public:
 };
 void ListType_Person::Push_front(Person data) {
 	Person* new_head = new Person(data);
-	if (new_head == NULL) { cout << "메모리 할당 에러" << endl; return; }
+	if (new_head == nullptr) { cout << "메모리 할당 에러" << endl; return; }
 
-	if (head == NULL) { head = new_head; tail = new_head; }
+	if (head == nullptr) { head = new_head; tail = new_head; }
 	else {
 		new_head->Link = head;
 		head = new_head;
@@ -307,9 +323,9 @@ void ListType_Person::Push_front(Person data) {
 }
 void ListType_Person::Push_back(Person data) {
 	Person* new_tail = new Person(data);
-	if (new_tail == NULL) { cout << "메모리 할당 에러" << endl; return; }
+	if (new_tail == nullptr) { cout << "메모리 할당 에러" << endl; return; }
 
-	if (head == NULL) { head = new_tail; tail = new_tail; }
+	if (head == nullptr) { head = new_tail; tail = new_tail; }
 	else {
 		tail->Link = new_tail;
 		tail = new_tail;
@@ -320,7 +336,7 @@ void ListType_Person::Insert(Person data, int index) {
 	if (index < 0 || index > size) { cout << "잘못된 인덱스 번호 입니다." << endl; return; }
 	
 	Person* new_person = new Person(data);
-	if (new_person == NULL) { cout << "메모리 할당 에러	" << endl; return; }
+	if (new_person == nullptr) { cout << "메모리 할당 에러	" << endl; return; }
 
 	if (index == 0) { Push_front(data); }
 	else if (index == size) { Push_back(data); }
@@ -334,7 +350,7 @@ void ListType_Person::Insert(Person data, int index) {
 	size++;
 }
 void ListType_Person::Pop_front() {
-	if (head == NULL) { cout << "리스트가 NULL 입니다." << endl; return; }
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	else {
 		Person* new_head = head->Link;
 		delete head;
@@ -343,12 +359,12 @@ void ListType_Person::Pop_front() {
 	}
 }
 void ListType_Person::Pop_back() {
-	if (head == NULL) { cout << "리스트가 NULL 입니다." << endl; return; }
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	else {
 		Person* new_tail = head;
-		while (new_tail->Link != NULL)
+		while (new_tail->Link != nullptr)
 			new_tail = new_tail->Link;
-		delete tail;
+		delete tail; tail = nullptr;
 		tail = new_tail;
 		size--;
 	}
@@ -356,7 +372,7 @@ void ListType_Person::Pop_back() {
 void ListType_Person::Clear() {
 	Person* iter = head;
 	Person* removed;
-	while (iter !=NULL)
+	while (iter != nullptr)
 	{
 		removed = iter;
 		iter = iter->Link;
@@ -368,7 +384,7 @@ void ListType_Person::Print() {
 	Person* iter = head;
 	int index = 0;
 	cout << "==========리스트 출력==========" << endl;
-	while (iter != NULL)
+	while (iter != nullptr)
 	{
 		cout << index << "번 "; iter->Print();
 		index++;
@@ -385,16 +401,16 @@ public:
 		//person.SetInfo("lee", 48, 1.4);
 		//list->Push_front(person);
 		
-		person.SetInfo("park", 27, 1.2);
+		person.SetInfo("park", 27, 1.2f);
 		list->Push_front(person);
 
-		person.SetInfo("kim", 34, 1.7);
+		person.SetInfo("kim", 34, 1.7f);
 		list->Push_front(person);
 
-		person.SetInfo("choi", 30, 1.3);
+		person.SetInfo("choi", 30, 1.3f);
 		list->Push_back(person);
 
-		person.SetInfo("lee", 48, 1.4);
+		person.SetInfo("lee", 48, 1.4f);
 		list->Insert(person, 2);
 
 		list->Print();
@@ -410,12 +426,12 @@ class Question_15 {
 	bool min;
 
 	int Find(ListType* list, bool compare) {
-		if (list == NULL || list->GetHead() == NULL) { cout << "리스트가 NULL 입니다." << endl; return -1; }
+		if (list == nullptr || list->GetHead() == nullptr) { cout << "리스트가 NULL 입니다." << endl; return -1; }
 
 		NodeType* iter = list->GetHead();
 		int result = iter->data;
 		iter = iter->Link;
-		while (iter != NULL)
+		while (iter != nullptr)
 		{
 			if (compare) {
 				if (iter->data > result)
@@ -455,6 +471,51 @@ public:
 };
 #pragma endregion
 
+//16. 홀수번째 있는 노드들을 삭제하는 프로그램
+#pragma region question16
+class Question_16 {
+	ListType* list;
+	void oddDelete(ListType* list) {
+		NodeType* even = list->GetHead()->Link;
+		NodeType* odd = nullptr;
+		list->Pop_front();
+
+		while (even->Link != nullptr)		//짝수노드가 tail이 아닐때 까지
+		{
+			odd = even->Link;			//홀수노드 주소를 넘겨줌
+			if (odd->Link == nullptr) {	//홀수노드 다음이 NULL(즉 홀수노드가 tail이면)
+				list->Pop_back(); break;
+			}
+			
+			even->Link = odd->Link;		//짝수번째 끼리 연결
+			delete odd;					//홀수 노드 삭제
+			even = even->Link;			//다음짝수 노드로 이동
+		}
+	}
+public:
+	void run() {
+		list = new ListType;
+	
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수(10~20)까지 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(10, 20);
+
+		int rand = random(gen);
+		for (int i = 1; i < 6; i++)
+			list->Push_back(element{ i });
+
+		cout << "삭제전 : head = " << list->GetHead()->data << " tail = " << list->GetTail()->data << endl;
+		list->List_Print();
+		oddDelete(list);
+		cout << "삭제후 : head = " << list->GetHead()->data << " tail = " << list->GetTail()->data << endl;
+		list->List_Print();
+	}
+};
+#pragma endregion
+
 
 class Test {
 public:
@@ -476,8 +537,10 @@ int main()
 	q13.run();*/
 	/*Question_14 q14;
 	q14.run();*/
-	Question_15 q15;
-	q15.run();
+	/*Question_15 q15;
+	q15.run();*/
+	Question_16 q16;
+	q16.run();
 
 	return 0;
 }
