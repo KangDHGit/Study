@@ -1105,19 +1105,22 @@ void Link_SortedList::PopBack(NodeType* pretail) {
 void Link_SortedList::Add(element item) {
 	NodeType* new_node = new NodeType{ item, nullptr };
 	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
-	if (Is_empty()) { head = new_node; tail = new_node; return; }
+	if (Is_empty()) { head = new_node; tail = new_node; size++; return; }
 	if (item < head->data) { PushFront(new_node); return; }
 
+	NodeType* preNode = head;
 	NodeType* iter = head->Link;
 
-	while (iter->Link != nullptr)
+	while (iter != nullptr)
 	{
 		if (item < iter->data) {
-			new_node->Link = iter->Link;
-			iter->Link = new_node;
+			preNode->Link = new_node;
+			new_node->Link = iter;
 			size++;
 			return;
 		}
+		preNode = iter;
+		iter = iter->Link;
 	}
 	PushBack(new_node);
 }
@@ -1168,16 +1171,27 @@ void Link_SortedList::Clear() {
 	}
 	Init();
 }
+void Link_SortedList::Print() {
+	NodeType* iter = head;
+		cout << "head : " << head->data << " tail : " << tail->data << endl;
+	while (iter != nullptr)
+	{
+		cout.width(3); cout << iter->data <<",";
+		iter = iter->Link;
+	}
+	cout << endl;
+}
 
 class Question_23 {
 public:
 	void Run() {
 		Link_SortedList* list = new Link_SortedList;
+		list->Add(element{ 2 });
 		list->Add(element{ 0 });
 		list->Add(element{ 1 });
-		list->Add(element{ 2 });
 		list->Add(element{ 3 });
-		//list->Print();
+		list->Delete(0);
+		list->Print();
 	}
 };
 #pragma endregion
