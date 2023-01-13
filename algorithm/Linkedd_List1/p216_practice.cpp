@@ -928,6 +928,117 @@ public:
 };
 #pragma endregion
 
+//22. 리스트로 SortedList 구현하기
+#pragma region question22
+class SortedList {
+public:
+	const static int MAX_SIZE = 10;
+private:
+	element data[MAX_SIZE];
+	int top;
+public:
+	SortedList() :top(-1){}
+	bool Is_empty() { return top == -1; }
+	bool Is_full() { return top == MAX_SIZE - 1; }
+	int GetLength() { return top + 1; }
+	void Add(element item);
+	void Delete(element item);
+	void Clear() { top = -1; }
+	bool Contain(element item);
+	void Print();
+};
+void SortedList::Add(element item) {
+	if (Is_full()) { cout << "리스트 포화 에러" << endl; return; }
+	if (Is_empty()) { top++; data[top] = item; return; }
+
+	
+	for (int i = 0; i < top + 1; i++)
+	{
+		if (item < data[i]) {	// 0 1 3 4 에 2삽입
+			for (int j = top + 1; j > i; j--)	// 0 1 _ 3 4
+			{
+				data[j] = data[j - 1];
+			}
+			data[i] = item;
+			top++;
+			return;
+		}
+	}
+	top++;
+	data[top] = item;
+}
+void SortedList::Delete(element item) {
+	int deleteCount = 0;
+	for (int i = 0; i < top + 1; i++)
+	{
+		if (data[i] == item) {
+			for (int j = i; j < top; j++)
+			{
+				data[j] = data[j + 1];
+			}
+			i--;	//한칸씩 당겨지기 때문에 제자리 한번더 검사
+			deleteCount++;
+			top--;
+		}
+	}
+	if (deleteCount > 0) { cout << "["<< item << "] " << deleteCount << "개를 찾아서 삭제 했습니다." << endl; }
+	else { cout << "[" << item << "] 삭제 실패 : 존재하지 않는 데이터 입니다." << endl; }
+}
+bool SortedList::Contain(element item) {
+	for (int i = 0; i <= top; i++)
+	{
+		if (data[i] == item)
+			return true;
+	}
+	return false;
+}
+void SortedList::Print() {
+	for (int i = 0; i < top + 1; i++)
+	{
+		cout.width(3); cout << data[i] << ",";
+	}
+	cout << endl;
+}
+class Question_22 {
+public:
+	void Run() {
+		SortedList list;
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수를 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(0, 25);
+		
+		for (int i = 0; i < list.MAX_SIZE; i++)
+		{
+			list.Add(random(gen));
+		}
+		cout << "list : length = " << list.GetLength() << endl; list.Print();
+		cout << endl;
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			if (list.Contain(element{ num })){
+				cout << "[" << num << "] 은 리스트에 포함 돼있습니다" << endl;
+			}
+			else {
+				cout << "[" << num << "] 은 리스트에 포함 돼있지않습니다." << endl;
+			}
+		}
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			list.Delete(num);
+			cout << "list : length = " << list.GetLength() << endl; list.Print();
+			cout << endl;
+		}
+	}
+};
+#pragma endregion
+
 class Test {
 public:
 	int a;
@@ -960,8 +1071,10 @@ int main()
 	q19.Run();*/
 	/*Question_20 q20;
 	q20.Run();*/
-	Question_21 q21;
-	q21.Run();
+	/*Question_21 q21;
+	q21.Run();*/
+	Question_22 q22;
+	q22.Run();
 
 	return 0;
 }
