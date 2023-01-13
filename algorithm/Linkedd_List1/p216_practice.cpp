@@ -703,7 +703,8 @@ public:
 #pragma endregion
 
 //20. 다항식을 연결리스트로 나타내고 두 다항식의 합을 구하기
-#pragma region question20
+//21. 어떤 실수 x에 대해 다항식의 값을 계산하는 함수 작성
+#pragma region question20~21
 struct Term
 {
 	int coef;	//계수
@@ -717,7 +718,7 @@ struct NodeTerm {
 		if (term.coef >= 0) { oper = '+'; }
 		else { oper = '-'; }
 		cout.width(2); cout << oper;
-		cout.width(2); cout << abs(term.coef) << "^" << term.expon;
+		cout.width(2); cout << abs(term.coef) << "x^" << term.expon;
 	}
 };
 
@@ -837,6 +838,23 @@ public:
 		}
 		return poly;
 	}
+	static int PolyEval(Polynomail* poly, int x) {
+		int total = 0;
+		NodeTerm* iter = poly->Gethead();
+		while (iter != nullptr)
+		{
+			total += ((iter->term.coef) * (Power(x, iter->term.expon)));
+			iter = iter->link;
+		}
+		return total;
+	}
+	static int Power(int num, int expon) {
+		if (num == 0) return 0;
+		if (expon == 1) return num;
+		if (expon == 0) return 1;
+
+		return expon % 2 == 0 ? Power(num * num, expon / 2) : num * Power(num * num, (expon - 1) / 2);
+	}
 };
 
 class Question_20 {
@@ -876,8 +894,39 @@ public:
 		cout << "sum_poly :"; sum_poly->Print();
 	}
 };
-#pragma endregion
 
+class Question_21 {
+public:
+	void Run() {
+		Polynomail* poly = new Polynomail;
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수를 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> coefRandom(-9, 9);
+		std::uniform_int_distribution<int> max_exponRandom(6, 8);
+		std::uniform_int_distribution<int> sub_exponRandom(1, 3);
+		std::uniform_int_distribution<int> numberRandom(2, 4);
+
+		int max_expon = max_exponRandom(gen);
+		while (max_expon>= 0)
+		{
+			int coef = coefRandom(gen);
+			int expon = max_expon;
+			while (coef == 0)
+				coef = coefRandom(gen);
+			poly->Pushback(Term{ coef, expon });
+			max_expon -= sub_exponRandom(gen);
+		}
+
+		cout << "poly :"; poly->Print();
+		int number = numberRandom(gen);
+		cout << "PolyEval : x = " << number << " total = " << Calc::PolyEval(poly, number) << endl;
+	}
+};
+#pragma endregion
 
 class Test {
 public:
@@ -909,8 +958,10 @@ int main()
 	q18.run();*/
 	/*Question_19 q19;
 	q19.Run();*/
-	Question_20 q20;
-	q20.Run();
+	/*Question_20 q20;
+	q20.Run();*/
+	Question_21 q21;
+	q21.Run();
 
 	return 0;
 }
