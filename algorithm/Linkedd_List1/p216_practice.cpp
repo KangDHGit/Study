@@ -659,95 +659,6 @@ public:
 #pragma endregion
 
 //19. split 함수 작성(리스트 하나를 두개로 분리, 홀수번째 리스트, 짝수번째 리스트)
-
-//20. 다항식을 연결리스트로 나타내고 두 다항식의 합을 구하기
-struct Term
-{
-	int coef;	//계수
-	int expon;	//지수(거듭제곱)
-};
-struct NodeTerm {
-	Term term;
-	NodeTerm* link;
-};
-
-class Polynomail {
-	NodeTerm* head;
-	NodeTerm* tail;
-	int size;
-public:
-	void init() { size = 0; head = nullptr; tail = nullptr; }
-	Polynomail() { init(); }
-	NodeTerm* Gethead() const { return head; }
-	void Clear();
-	void Pushback(Term term);
-};
-
-void Polynomail::Clear() {
-	NodeTerm* iter = head;
-	NodeTerm* removed = nullptr;
-	while (iter != nullptr)
-	{
-		removed = iter;
-		iter = iter->link;
-		delete removed;
-	}
-	init();
-}
-void Polynomail::Pushback(Term term) {
-	NodeTerm* new_tail = new NodeTerm{ term, nullptr };
-	if (new_tail == nullptr) { cout << "메모리 할당 에러" << endl; return; }
-
-	if (head == nullptr) { head = new_tail; tail = new_tail; }
-	else{
-		tail->link = new_tail;
-		tail = new_tail;
-	}
-	size++;
-}
-class Calc {
-	const static short ExponCompare(Term a, Term b) {
-		if (a.expon > b.expon)
-			return 1;
-		else if (a.expon == b.expon)
-			return 0;
-		else
-			return -1;
-	}
-public:
-	static Polynomail* Sum(Polynomail* polyA, Polynomail* polyB) {
-		if (polyA == nullptr) { return polyB; }
-		if (polyB == nullptr) { return polyA; }
-
-		Polynomail* poly = new Polynomail;
-		if (poly == nullptr) { cout << "메모리 할당 에러" << endl; return nullptr; }
-
-		NodeTerm* iterA = polyA->Gethead();
-		NodeTerm* iterB = polyB->Gethead();
-
-		while (iterA != nullptr && iterB != nullptr)
-		{
-			const short compare = ExponCompare(iterA->term, iterB->term);
-			int coef;
-			int expon;
-			switch (compare)
-			{
-			case 1 :
-				break;
-			case 0:
-				coef = iterA->term.coef + iterB->term.coef;
-				expon = iterA->term.expon;
-				poly->Pushback(Term{ coef, expon });
-				iterA = iterA->link;
-				iterB = iterB->link;
-				break;
-			case -1:
-				break;
-			}
-		}
-	}
-};
-
 #pragma region question19
 class Question_19 {
 	void Split(ListType* list, ListType* outlistA, ListType* outlistB) {
@@ -791,6 +702,181 @@ public:
 };
 #pragma endregion
 
+//20. 다항식을 연결리스트로 나타내고 두 다항식의 합을 구하기
+#pragma region question20
+struct Term
+{
+	int coef;	//계수
+	int expon;	//지수(거듭제곱)
+};
+struct NodeTerm {
+	Term term;
+	NodeTerm* link;
+	void Print() {
+		char oper;
+		if (term.coef >= 0) { oper = '+'; }
+		else { oper = '-'; }
+		cout.width(2); cout << oper;
+		cout.width(2); cout << abs(term.coef) << "^" << term.expon;
+	}
+};
+
+class Polynomail {
+	NodeTerm* head;
+	NodeTerm* tail;
+	int size;
+public:
+	void init() { size = 0; head = nullptr; tail = nullptr; }
+	Polynomail() { init(); }
+	NodeTerm* Gethead() const { return head; }
+	void Clear();
+	void Pushback(Term term);
+	void Print();
+	~Polynomail() { Clear(); delete this; }
+};
+void Polynomail::Clear() {
+	NodeTerm* iter = head;
+	NodeTerm* removed = nullptr;
+	while (iter != nullptr)
+	{
+		removed = iter;
+		iter = iter->link;
+		delete removed;
+	}
+	init();
+}
+void Polynomail::Pushback(Term term) {
+	NodeTerm* new_tail = new NodeTerm{ term, nullptr };
+	if (new_tail == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+
+	if (head == nullptr) { head = new_tail; tail = new_tail; }
+	else {
+		tail->link = new_tail;
+		tail = new_tail;
+	}
+	size++;
+}
+void Polynomail::Print() {
+	NodeTerm* iter = head;
+	while (iter != nullptr)
+	{
+		iter->Print();
+		iter = iter->link;
+	}
+	cout << endl;
+}
+
+class Calc {
+	const static short ExponCompare(Term a, Term b) {
+		if (a.expon > b.expon)
+			return 1;
+		else if (a.expon == b.expon)
+			return 0;
+		else
+			return -1;
+	}
+public:
+	static Polynomail* Sum(Polynomail* polyA, Polynomail* polyB) {
+		if (polyA == nullptr) { return polyB; }
+		if (polyB == nullptr) { return polyA; }
+
+		Polynomail* poly = new Polynomail;
+		if (poly == nullptr) { cout << "메모리 할당 에러" << endl; return nullptr; }
+
+		NodeTerm* iterA = polyA->Gethead();
+		NodeTerm* iterB = polyB->Gethead();
+
+		while (iterA != nullptr && iterB != nullptr)
+		{
+			const short compare = ExponCompare(iterA->term, iterB->term);
+			int coef;
+			int expon;
+			switch (compare)
+			{
+			case 1:
+				coef = iterA->term.coef;
+				expon = iterA->term.expon;
+				iterA = iterA->link;
+				poly->Pushback(Term{ coef, expon });
+				break;
+			case 0:
+				coef = iterA->term.coef + iterB->term.coef;
+				expon = iterA->term.expon;
+				iterA = iterA->link;
+				iterB = iterB->link;
+				if (coef == 0) { continue; }
+				poly->Pushback(Term{ coef, expon });
+				break;
+			case -1:
+				coef = iterB->term.coef;
+				expon = iterB->term.expon;
+				iterB = iterB->link;
+				poly->Pushback(Term{ coef, expon });
+				break;
+			}
+		}
+
+		while (iterA != nullptr)
+		{
+			int coef;
+			int expon;
+			coef = iterA->term.coef;
+			expon = iterA->term.expon;
+			iterA = iterA->link;
+			poly->Pushback(Term{ coef, expon });
+		}
+
+		while (iterB != nullptr)
+		{
+			int coef;
+			int expon;
+			coef = iterB->term.coef;
+			expon = iterB->term.expon;
+			iterB = iterB->link;
+			poly->Pushback(Term{ coef, expon });
+		}
+		return poly;
+	}
+};
+
+class Question_20 {
+public:
+	void Run() {
+		Polynomail* polys[2] = { new Polynomail, new Polynomail };
+		Polynomail* sum_poly = new Polynomail;
+		if (polys[0] == nullptr || polys[1] == nullptr || sum_poly == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수를 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> coefRandom(-9, 9);
+		std::uniform_int_distribution<int> max_exponRandom(6, 8);
+		std::uniform_int_distribution<int> sub_exponRandom(1, 3);
+
+		for (int i = 0; i < 2; i++)
+		{
+			int max_expon = max_exponRandom(gen);
+			while (max_expon >= 0)
+			{
+				int coef = coefRandom(gen);
+				while (coef == 0)
+					coef = coefRandom(gen);
+
+				int expon = max_expon;
+				max_expon -= sub_exponRandom(gen);
+				polys[i]->Pushback(Term{ coef, expon });
+			}
+		}
+
+		sum_poly = Calc::Sum(polys[0], polys[1]);
+		cout << "polys[0] :"; polys[0]->Print();
+		cout << "polys[1] :"; polys[1]->Print();
+		cout << "sum_poly :"; sum_poly->Print();
+	}
+};
+#pragma endregion
 
 
 class Test {
@@ -821,8 +907,10 @@ int main()
 	q17.run();*/
 	/*Question_18 q18;
 	q18.run();*/
-	Question_19 q19;
-	q19.Run();
+	/*Question_19 q19;
+	q19.Run();*/
+	Question_20 q20;
+	q20.Run();
 
 	return 0;
 }
