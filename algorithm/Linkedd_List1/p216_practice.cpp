@@ -130,6 +130,7 @@ void ListType::Pop_back() {
 }
 //13번
 void ListType::DeleteElements(element data) {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	NodeType* preIter = head;
 	NodeType* removed = nullptr;
 
@@ -928,16 +929,16 @@ public:
 };
 #pragma endregion
 
-//22. 리스트로 SortedList 구현하기
+//22. 배열로 SortedList 구현하기
 #pragma region question22
-class SortedList {
+class Arr_SortedList {
 public:
 	const static int MAX_SIZE = 10;
 private:
 	element data[MAX_SIZE];
 	int top;
 public:
-	SortedList() :top(-1){}
+	Arr_SortedList() :top(-1){}
 	bool Is_empty() { return top == -1; }
 	bool Is_full() { return top == MAX_SIZE - 1; }
 	int GetLength() { return top + 1; }
@@ -946,8 +947,9 @@ public:
 	void Clear() { top = -1; }
 	bool Contain(element item);
 	void Print();
+	~Arr_SortedList() { Clear(); delete this; }
 };
-void SortedList::Add(element item) {
+void Arr_SortedList::Add(element item) {
 	if (Is_full()) { cout << "리스트 포화 에러" << endl; return; }
 	if (Is_empty()) { top++; data[top] = item; return; }
 
@@ -967,7 +969,7 @@ void SortedList::Add(element item) {
 	top++;
 	data[top] = item;
 }
-void SortedList::Delete(element item) {
+void Arr_SortedList::Delete(element item) {
 	int deleteCount = 0;
 	for (int i = 0; i < top + 1; i++)
 	{
@@ -984,7 +986,7 @@ void SortedList::Delete(element item) {
 	if (deleteCount > 0) { cout << "["<< item << "] " << deleteCount << "개를 찾아서 삭제 했습니다." << endl; }
 	else { cout << "[" << item << "] 삭제 실패 : 존재하지 않는 데이터 입니다." << endl; }
 }
-bool SortedList::Contain(element item) {
+bool Arr_SortedList::Contain(element item) {
 	for (int i = 0; i <= top; i++)
 	{
 		if (data[i] == item)
@@ -992,7 +994,7 @@ bool SortedList::Contain(element item) {
 	}
 	return false;
 }
-void SortedList::Print() {
+void Arr_SortedList::Print() {
 	for (int i = 0; i < top + 1; i++)
 	{
 		cout.width(3); cout << data[i] << ",";
@@ -1002,7 +1004,7 @@ void SortedList::Print() {
 class Question_22 {
 public:
 	void Run() {
-		SortedList list;
+		Arr_SortedList list;
 		//시드값을 얻기위한 random_device 생성
 		std::random_device rd;
 		//random_device를 통해 난수생성 엔진을 초기화 한다.
@@ -1035,6 +1037,147 @@ public:
 			cout << "list : length = " << list.GetLength() << endl; list.Print();
 			cout << endl;
 		}
+	}
+};
+#pragma endregion
+
+//23. 단순 연결 리스트로 SortedList 구현하기
+#pragma region question23
+class Link_SortedList {
+	NodeType* head;
+	NodeType* tail;
+	int size;
+	void PushFront(NodeType* node);
+	void PushBack(NodeType* node);
+	void PopFront();
+	void PopBack(NodeType* pretail = nullptr);
+public:
+	void Init() { size = 0; head = nullptr; tail = nullptr; }
+	Link_SortedList() { Init(); }
+	bool Is_empty() { return size == 0; }
+	int GetLength() { return size; }
+	void Add(element item);
+	void Delete(element item);
+	void Clear();
+	bool Contain(element item);
+	void Print();
+};
+void Link_SortedList::PushFront(NodeType* node) {
+	node->Link = head;
+	head = node;
+	size++;
+}
+void Link_SortedList::PushBack(NodeType* node) {
+	tail->Link = node;
+	tail = node;
+	size++;
+}
+void Link_SortedList::PopFront() {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; tail = nullptr; return; }
+	NodeType* new_head = head->Link;
+	delete head;
+	head = new_head;
+	size--;
+}
+void Link_SortedList::PopBack(NodeType* pretail) {
+	NodeType* new_tail = nullptr;
+	NodeType* iter = head;
+	if (iter == nullptr) { cout << "리스트가 NULL 입니다." << endl; tail = nullptr; return; }
+
+	if (pretail == nullptr) {
+		while (iter->Link != nullptr)
+		{
+			new_tail = iter;
+			iter = iter->Link;
+		}
+		delete iter;
+		tail = new_tail;
+		tail->Link = nullptr;
+		size--;
+	}
+	else {
+		delete tail;
+		tail = pretail;
+		pretail->Link = nullptr;
+		size--;
+	}
+}
+void Link_SortedList::Add(element item) {
+	NodeType* new_node = new NodeType{ item, nullptr };
+	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+	if (Is_empty()) { head = new_node; tail = new_node; return; }
+	if (item < head->data) { PushFront(new_node); return; }
+
+	NodeType* iter = head->Link;
+
+	while (iter->Link != nullptr)
+	{
+		if (item < iter->data) {
+			new_node->Link = iter->Link;
+			iter->Link = new_node;
+			size++;
+			return;
+		}
+	}
+	PushBack(new_node);
+}
+void Link_SortedList::Delete(element item) {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	NodeType* preIter = head;
+	NodeType* removed = nullptr;
+	int count = 0;
+	int deleteCount = 0;
+	while (head->data == item)
+	{
+		PopFront(); preIter = head;
+		deleteCount++;
+		count++;
+	}
+
+	removed = preIter->Link;
+	while (removed != nullptr)
+	{
+		if (removed->data == item) {
+			preIter->Link = removed->Link;	//삭제할 노드 앞이랑 뒤 연결
+			delete removed; size--;			
+			removed = preIter->Link;		//뒤 노드를 다시 삭제할 노드에 연결
+			deleteCount++;
+			count++;
+
+			if (count == size)				//삭제한 노드가 꼬리라면
+				tail = preIter;
+		}
+		else {
+			preIter = removed;
+			removed = removed->Link;
+		}
+	}
+	if (deleteCount > 0)
+		cout << "[" << item << "] " << deleteCount << "개를 찾아서 삭제했습니다." << endl;
+	else
+		cout << "[" << item << "] 삭제 실패 : 존재하지 않는 데이터 입니다." << endl;
+}
+void Link_SortedList::Clear() {
+	NodeType* iter = head;
+	NodeType* removed = nullptr;
+	while (iter != nullptr)
+	{
+		removed = iter;
+		iter = iter->Link;
+		delete removed;
+	}
+	Init();
+}
+
+class Question_23 {
+public:
+	void Run() {
+		Link_SortedList* list = new Link_SortedList;
+		list->Add(element{ 0 });
+		list->Add(element{ 1 });
+		list->Add(element{ 2 });
+		list->Add(element{ 3 });
+		//list->Print();
 	}
 };
 #pragma endregion
@@ -1073,8 +1216,10 @@ int main()
 	q20.Run();*/
 	/*Question_21 q21;
 	q21.Run();*/
-	Question_22 q22;
-	q22.Run();
+	/*Question_22 q22;
+	q22.Run();*/
+	Question_23 q23;
+	q23.Run();
 
 	return 0;
 }
