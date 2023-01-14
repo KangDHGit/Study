@@ -115,9 +115,9 @@ void ListType::Pop_front() {
 	size--;
 }
 void ListType::Pop_back() {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다" << endl; return; }
 	NodeType* iter = head;
 	NodeType* new_tail = nullptr;
-	if (iter == nullptr) { cout << "리스트가 NULL 입니다" << endl; return; }
 
 	while (iter->Link != nullptr)
 	{
@@ -126,19 +126,18 @@ void ListType::Pop_back() {
 	}
 	delete iter;
 	tail = new_tail;
-	tail->Link = nullptr;
+	if(tail != nullptr)
+		tail->Link = nullptr;
+	size--;
 }
 //13번
 void ListType::DeleteElements(element data) {
 	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	while (head->data == data)
+		Pop_front();
+
 	NodeType* preIter = head;
-	NodeType* removed = nullptr;
-
-	while (preIter->data == data) {
-		Pop_front(); preIter = head;
-	}
-
-	removed = preIter->Link;
+	NodeType* removed = preIter->Link;
 
 	while (removed != nullptr)
 	{
@@ -1098,11 +1097,11 @@ void Link_SortedList::PopFront() {
 	size--;
 }
 void Link_SortedList::PopBack(NodeType* pretail) {
-	NodeType* new_tail = nullptr;
-	NodeType* iter = head;
-	if (iter == nullptr) { cout << "리스트가 NULL 입니다." << endl; tail = nullptr; return; }
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; tail = nullptr; return; }
 
 	if (pretail == nullptr) {
+	NodeType* new_tail = nullptr;
+	NodeType* iter = head;
 		while (iter->Link != nullptr)
 		{
 			new_tail = iter;
@@ -1110,7 +1109,8 @@ void Link_SortedList::PopBack(NodeType* pretail) {
 		}
 		delete iter;
 		tail = new_tail;
-		tail->Link = nullptr;
+		if(tail !=nullptr)
+			tail->Link = nullptr;
 		size--;
 	}
 	else {
@@ -1144,16 +1144,15 @@ void Link_SortedList::Add(element item) {
 }
 void Link_SortedList::Delete(element item) {
 	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	int deleteCount = 0;
+
+	while (head->data == item)	//삭제할 데이터가 head인경우
+	{
+		PopFront(); deleteCount++;
+	}
 	NodeType* preIter = head;
 	NodeType* removed = nullptr;
 	element tailData = tail->data;		//삭제한 노드가 꼬리인지 확인할 변수
-
-	int deleteCount = 0;
-	while (head->data == item)			//삭제할 데이터가 head인경우
-	{
-		PopFront(); preIter = head;
-		deleteCount++;
-	}
 
 	removed = preIter->Link;
 	while (removed != nullptr)
@@ -1166,8 +1165,9 @@ void Link_SortedList::Delete(element item) {
 			removed = preIter->Link;		//뒤 노드를 다시 삭제할 노드에 연결
 			deleteCount++;
 
-			if (removedData == tailData)				//삭제한 노드가 꼬리라면
-				tail = preIter;
+			if (removedData == tailData) {	//삭제한 노드가 꼬리라면
+				tail = preIter; tail->Link = nullptr;
+			}
 		}
 		else {
 			preIter = removed;
@@ -1268,18 +1268,223 @@ class Matrix {
 	MatrixNode* head;
 	MatrixNode* tail;
 	int size;
+	void PushFront(MatrixNode* new_head);
+	void PushBack(MatrixNode* new_tail);
+	void PopFront();
+	void PopBack(MatrixNode* pre_tail = nullptr);
+	int Compare(MatrixNode* nodeA, MatrixNode* nodeB); //행렬이 A가 작으면 1 같으면 0 크면 -1
 public:
 	void Init() { size = 0; head = nullptr; tail = nullptr; }
 	Matrix() { Init(); }
 	int GetLength() { return size; }
 	bool is_empty() { return size == 0; }
 	void Add(MatrixElement item);
-	void Delete(MatrixElement item);
+	void Delete(int value);
 	void Clear();
-	bool Contain(MatrixElement item);
+	bool Contain(int value);
 	void Print();
+	~Matrix() { Clear(); cout << "동적 메모리 삭제 완료" << endl; }
 };
+void Matrix::PushFront(MatrixNode* node) {
+	if (head == nullptr) { head == node; tail = node; return; }
+	node->link = head;
+	head = node;
+	size++;
+}
+void Matrix::PushBack(MatrixNode* node) {
+	if (head == nullptr) { head == node; tail = node; return; }
+	tail->link = node;
+	tail = node;
+	size++;
+}
+void Matrix::PopFront() {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; tail = nullptr; return; }
+	MatrixNode* new_head = head->link;
+	delete head;
+	head = new_head;
+	size--;
+}
+void Matrix::PopBack(MatrixNode* pre_tail) {
+	if (pre_tail == nullptr) {
+		if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+		MatrixNode* new_tail = nullptr;
+		MatrixNode* iter = head;
 
+		while (iter->link != nullptr)
+		{
+			new_tail = iter;
+			iter = iter->link;
+		}
+		delete iter;
+		tail = new_tail;
+		if(tail != nullptr)
+			tail->link = nullptr;
+		size--;
+	}
+	else {
+		delete tail;
+		tail = pre_tail;
+		tail->link = nullptr;
+		size--;
+	}
+}
+int Matrix::Compare(MatrixNode* nodeA, MatrixNode* nodeB) {
+	if (nodeA->data.row < nodeB->data.row)
+		return 1;
+	else if (nodeA->data.row == nodeB->data.row) {
+		if (nodeA->data.col < nodeB->data.col)
+			return 1;
+		else if (nodeA->data.col == nodeB->data.col)
+			return 0;
+		else
+			return -1;
+	}
+	else
+		return -1;
+}
+void Matrix::Add(MatrixElement item) {
+	MatrixNode* new_node = new MatrixNode{ item, nullptr };
+	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+	if (head == nullptr) { head = new_node; tail = new_node; size++; return; }
+	if (item.row < head->data.row) { PushFront(new_node); return; }
+
+	MatrixNode* pre_node = head;
+	MatrixNode* iter = head->link;
+	while (iter != nullptr)
+	{
+		switch (Compare(new_node, iter))
+		{
+		case 1:	//new_node가 작을때
+			pre_node->link = new_node;
+			new_node->link = iter;
+			size++;
+			return;
+		case 0:	//같을때
+			cout << "이미 존재하는 [" << iter->data.row << "][" << iter->data.col << "] 행렬의 값을 " << iter->data.value << "에서 " << new_node->data.value << "로 바꿨습니다." << endl;
+			iter->data.value = new_node->data.value;
+			delete new_node; return;
+		case -1: //new_node가 클때
+			pre_node = iter;
+			iter = iter->link;
+		}
+	}
+	PushBack(new_node);
+}
+void Matrix::Delete(int value) {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	int deleteCount = 0;
+	int tail_value = tail->data.value;
+
+	if (head->data.value == value) {
+		PopFront(); deleteCount++;
+	}
+
+	MatrixNode* pre_node = head;
+	MatrixNode* removed = head->link;
+	while (removed != nullptr)
+	{
+		if (removed->data.value == value) {
+			pre_node->link = removed->link;
+			delete removed;
+			removed = pre_node->link;
+			deleteCount++;
+			size--;
+			if (value == tail_value) {
+				tail = pre_node; tail->link = nullptr;
+			}
+		}
+		else {
+			pre_node = removed;
+			removed = removed->link;
+		}
+	}
+	if (deleteCount > 0) { cout << "[" << value << "] " << deleteCount << "개를 찾아서 삭제 했습니다." << endl; }
+	else { cout << "[" << value << "] 삭제 실패 : 존재하지 않는 데이터 입니다." << endl; }
+}
+void Matrix::Clear() {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다. " << endl; return; }
+	MatrixNode* iter = head;
+	MatrixNode* removed = nullptr;
+
+	while (iter != nullptr)
+	{
+		removed = iter;
+		iter = iter->link;
+		delete removed;
+	}
+	Init();
+}
+bool Matrix::Contain(int value) {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다. " << endl; return false; }
+	MatrixNode* iter = head;
+	while (iter != nullptr)
+	{
+		if (iter->data.value == value)
+			return true;
+		iter = iter->link;
+	}
+	return false;
+}
+void Matrix::Print() {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다. " << endl; return; }
+	MatrixNode* iter = head;
+	
+	while (iter != nullptr)
+	{
+		cout << "("; cout.width(2); cout << iter->data.row << ",";
+		cout.width(2); cout << iter->data.col << ",";
+		cout.width(2); cout << iter->data.value << ")";
+		cout << endl;
+		iter = iter->link;
+	}
+}
+class Question_24 {
+public:
+	void Run() {
+		Matrix* matrix = new Matrix;
+		int max_element = 10;
+
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수를 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(0, 20);
+
+		for (int i = 0; i < max_element; i++)
+		{
+			int randrow = random(gen);
+			int randcol = random(gen);
+			int randvalue = random(gen);
+
+			matrix->Add(MatrixElement{ randrow, randcol, randvalue });
+		}
+
+		cout << "matrix : length = " << matrix->GetLength() << endl; matrix->Print();
+		cout << endl;
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			if(matrix->Contain(num)) {
+				cout << "[" << num << "] 은 리스트에 포함 돼있습니다" << endl;
+			}
+			else {
+				cout << "[" << num << "] 은 리스트에 포함 돼있지않습니다." << endl;
+			}
+		}
+		cout << endl;
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			matrix->Delete(num);
+			cout << "matrix : length = " << matrix->GetLength() << endl; matrix->Print();
+			cout << endl;
+		}
+		delete matrix;
+	}
+};
 #pragma endregion
 
 class Test {
@@ -1318,8 +1523,10 @@ int main()
 	q21.Run();*/
 	/*Question_22 q22;
 	q22.Run();*/
-	Question_23 q23;
-	q23.Run();
+	/*Question_23 q23;
+	q23.Run();*/
+	Question_24 q24;
+	q24.Run();
 
 	return 0;
 }
