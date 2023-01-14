@@ -1128,26 +1128,27 @@ void Link_SortedList::Delete(element item) {
 	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	NodeType* preIter = head;
 	NodeType* removed = nullptr;
-	int count = 0;
+	element tailData = tail->data;		//삭제한 노드가 꼬리인지 확인할 변수
+
 	int deleteCount = 0;
 	while (head->data == item)
 	{
 		PopFront(); preIter = head;
 		deleteCount++;
-		count++;
 	}
 
 	removed = preIter->Link;
 	while (removed != nullptr)
 	{
 		if (removed->data == item) {
+			element removedData = removed->data;
+
 			preIter->Link = removed->Link;	//삭제할 노드 앞이랑 뒤 연결
 			delete removed; size--;			
 			removed = preIter->Link;		//뒤 노드를 다시 삭제할 노드에 연결
 			deleteCount++;
-			count++;
 
-			if (count == size)				//삭제한 노드가 꼬리라면
+			if (removedData == tailData)				//삭제한 노드가 꼬리라면
 				tail = preIter;
 		}
 		else {
@@ -1185,13 +1186,38 @@ void Link_SortedList::Print() {
 class Question_23 {
 public:
 	void Run() {
-		Link_SortedList* list = new Link_SortedList;
-		list->Add(element{ 2 });
-		list->Add(element{ 0 });
-		list->Add(element{ 1 });
-		list->Add(element{ 3 });
-		list->Delete(0);
-		list->Print();
+		Arr_SortedList list;
+		//시드값을 얻기위한 random_device 생성
+		std::random_device rd;
+		//random_device를 통해 난수생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		//정수를 균등하게 나타내는 난수열을 생성하기위해 균등분포를 정의
+		std::uniform_int_distribution<int> random(0, 25);
+
+		for (int i = 0; i < 10; i++)
+			list.Add(element{ random(gen) });
+
+		cout << "list : length = " << list.GetLength() << endl;
+		list.Print();
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			if (list.Contain(element{ num })) {
+				cout << "[" << num << "] 은 리스트에 포함 돼있습니다" << endl;
+			}
+			else {
+				cout << "[" << num << "] 은 리스트에 포함 돼있지않습니다." << endl;
+			}
+		}
+
+		for (int i = 0; i < 5; i++)
+		{
+			int num = random(gen);
+			list.Delete(num);
+			cout << "list : length = " << list.GetLength() << endl; list.Print();
+			cout << endl;
+		}
 	}
 };
 #pragma endregion
