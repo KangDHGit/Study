@@ -37,7 +37,7 @@ public:
 	void Push_back(element data);
 	void List_Print();
 	void Clear();
-	~ListType() { Clear(); delete this; }
+	~ListType() { Clear();}
 };
 //10번-2 구현
 int ListType::GetSize(ListType* list) {
@@ -169,6 +169,7 @@ public:
 			cin >> data; list->Push_back(data);
 		}
 		cout << "생성된 연결 리스트 : "; list->List_Print();
+		delete list;
 	}
 };
 
@@ -188,6 +189,7 @@ public:
 		}
 		cout << "연결 리스트 노드의 개수(방법1) : " << list->GetSize() << endl;
 		cout << "연결 리스트 노드의 개수(방법2) : " << ListType::GetSize(list) << endl;
+		delete list;
 	}
 };
 
@@ -206,6 +208,7 @@ public:
 			cin >> data; list->Push_back(data);
 		}
 		cout << "연결 리스트 데이터의 합 : " << list->GetSum() << endl;
+		delete list;
 	}
 };
 
@@ -228,6 +231,7 @@ public:
 		if (size == 0) { cout << data << "를 연결리스트에서 찾지 못했습니다." << endl; }
 		else
 			cout << data << "를 연결리스트에서 " << size << "개 찾았습니다." << endl;
+		delete list;
 	}
 };
 
@@ -249,6 +253,7 @@ public:
 		cout << "삭제할 값을 입력하시오 : "; cin >> data;
 		list->DeleteElements(data);
 		cout << "삭제후 연결 리스트 : "; list->List_Print();
+		delete list;
 	}
 };
 #pragma endregion
@@ -417,6 +422,7 @@ public:
 		list->Insert(person, 2);
 
 		list->Print();
+		delete list;
 	}
 };
 #pragma endregion
@@ -470,6 +476,7 @@ public:
 		int maxNum = Find(list, max);
 		int minNum = Find(list, min);
 		cout << "최대값 : " << maxNum << " 최소값 : " << minNum << endl;
+		delete list;
 	}
 };
 #pragma endregion
@@ -515,6 +522,7 @@ public:
 		oddDelete(list);
 		cout << "삭제후 : head = " << list->GetHead()->data << " tail = " << list->GetTail()->data << endl;
 		list->List_Print();
+		delete list;
 	}
 };
 #pragma endregion
@@ -522,8 +530,6 @@ public:
 //17. alternate 함수 작성(두개의 리스트를 하나씩 교차로 합치기)
 #pragma region question17
 class Question_17 {
-	ListType* listA;
-	ListType* listB;
 	ListType* Alternate(ListType* listA, ListType* listB) {
 		if (listA == nullptr) { return listB; }
 		if (listB == nullptr) { return listA; }
@@ -554,9 +560,8 @@ class Question_17 {
 	}
 public:
 	void run() {
-		listA = new ListType;
-		listB = new ListType;
-
+		ListType* listA = new ListType;
+		ListType* listB = new ListType;
 
 		//시드값을 얻기위한 random_device 생성
 		std::random_device rd;
@@ -577,6 +582,10 @@ public:
 		ListType* list = Alternate(listA, listB);
 		cout << "list : head : " << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
 		list->List_Print();
+
+		delete listA;
+		delete listB;
+		delete list;
 	}
 };
 #pragma endregion
@@ -584,8 +593,6 @@ public:
 //18. merge 함수 작성(오름차순으로 정렬되 있는 두개의 리스트를 정렬을 유지고 합치기)
 #pragma region question18
 class Question_18 {
-	ListType* listA;
-	ListType* listB;
 public:
 	ListType* Merge(ListType* listA, ListType* listB) {
 		if (listA == nullptr) { return listB; }
@@ -624,8 +631,8 @@ public:
 		return list;
 	}
 	void run() {
-		listA = new ListType;
-		listB = new ListType;
+		ListType* listA = new ListType;
+		ListType* listB = new ListType;
 
 		//시드값을 얻기위한 random_device 생성
 		std::random_device rd;
@@ -655,6 +662,10 @@ public:
 		ListType* list = Merge(listA, listB);
 		cout << "list : head : " << list->GetHead()->data << " tail : " << list->GetTail()->data << " size : " << list->GetSize() << endl;
 		list->List_Print();
+
+		delete listA;
+		delete listB;
+		delete list;
 	}
 };
 #pragma endregion
@@ -699,6 +710,10 @@ public:
 		outlistA->List_Print();
 		cout << "outlistB : head : " << outlistB->GetHead()->data << " tail : " << outlistB->GetTail()->data << " size : " << outlistB->GetSize() << endl;
 		outlistB->List_Print();
+
+		delete outlistA;
+		delete outlistB;
+		delete list;
 	}
 };
 #pragma endregion
@@ -947,7 +962,7 @@ public:
 	void Clear() { top = -1; }
 	bool Contain(element item);
 	void Print();
-	~Arr_SortedList() { Clear(); delete this; }
+	~Arr_SortedList() { Clear(); }
 };
 void Arr_SortedList::Add(element item) {
 	if (Is_full()) { cout << "리스트 포화 에러" << endl; return; }
@@ -1061,6 +1076,9 @@ public:
 	void Clear();
 	bool Contain(element item);
 	void Print();
+	~Link_SortedList() { 
+		Clear(); 
+		cout << "동적메모리 삭제 완료" << endl; }
 };
 void Link_SortedList::PushFront(NodeType* node) {
 	node->Link = head;
@@ -1131,7 +1149,7 @@ void Link_SortedList::Delete(element item) {
 	element tailData = tail->data;		//삭제한 노드가 꼬리인지 확인할 변수
 
 	int deleteCount = 0;
-	while (head->data == item)
+	while (head->data == item)			//삭제할 데이터가 head인경우
 	{
 		PopFront(); preIter = head;
 		deleteCount++;
@@ -1156,6 +1174,7 @@ void Link_SortedList::Delete(element item) {
 			removed = removed->Link;
 		}
 	}
+
 	if (deleteCount > 0)
 		cout << "[" << item << "] " << deleteCount << "개를 찾아서 삭제했습니다." << endl;
 	else
@@ -1172,6 +1191,17 @@ void Link_SortedList::Clear() {
 	}
 	Init();
 }
+bool Link_SortedList::Contain(element item) {
+	if (head == nullptr) { cout << "리스트가 NULL 입니다." << endl; return false; }
+	NodeType* iter = head;
+	while (iter != nullptr)
+	{
+		if (iter->data == item)
+			return true;
+		iter = iter->Link;
+	}
+	return false;
+}
 void Link_SortedList::Print() {
 	NodeType* iter = head;
 		cout << "head : " << head->data << " tail : " << tail->data << endl;
@@ -1186,7 +1216,7 @@ void Link_SortedList::Print() {
 class Question_23 {
 public:
 	void Run() {
-		Arr_SortedList list;
+		Link_SortedList* list = new Link_SortedList;
 		//시드값을 얻기위한 random_device 생성
 		std::random_device rd;
 		//random_device를 통해 난수생성 엔진을 초기화 한다.
@@ -1195,15 +1225,15 @@ public:
 		std::uniform_int_distribution<int> random(0, 25);
 
 		for (int i = 0; i < 10; i++)
-			list.Add(element{ random(gen) });
+			list->Add(element{ random(gen) });
 
-		cout << "list : length = " << list.GetLength() << endl;
-		list.Print();
+		cout << "list : length = " << list->GetLength() << endl;
+		list->Print();
 
 		for (int i = 0; i < 5; i++)
 		{
 			int num = random(gen);
-			if (list.Contain(element{ num })) {
+			if (list->Contain(element{ num })) {
 				cout << "[" << num << "] 은 리스트에 포함 돼있습니다" << endl;
 			}
 			else {
@@ -1214,12 +1244,42 @@ public:
 		for (int i = 0; i < 5; i++)
 		{
 			int num = random(gen);
-			list.Delete(num);
-			cout << "list : length = " << list.GetLength() << endl; list.Print();
+			list->Delete(num);
+			cout << "list : length = " << list->GetLength() << endl; list->Print();
 			cout << endl;
 		}
+		delete list;
 	}
 };
+#pragma endregion
+
+//24. 연결리스트를 활용한 희소행렬 구현하기
+#pragma region question24
+struct MatrixElement {
+	int row;
+	int col;
+	int value;
+};
+struct MatrixNode {
+	MatrixElement data;
+	MatrixNode* link;
+};
+class Matrix {
+	MatrixNode* head;
+	MatrixNode* tail;
+	int size;
+public:
+	void Init() { size = 0; head = nullptr; tail = nullptr; }
+	Matrix() { Init(); }
+	int GetLength() { return size; }
+	bool is_empty() { return size == 0; }
+	void Add(MatrixElement item);
+	void Delete(MatrixElement item);
+	void Clear();
+	bool Contain(MatrixElement item);
+	void Print();
+};
+
 #pragma endregion
 
 class Test {
