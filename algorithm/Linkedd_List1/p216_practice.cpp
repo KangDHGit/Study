@@ -1285,16 +1285,16 @@ public:
 	void Print();
 	~Matrix() { Clear(); cout << "동적 메모리 삭제 완료" << endl; }
 };
-void Matrix::PushFront(MatrixNode* node) {
-	if (head == nullptr) { head == node; tail = node; return; }
-	node->link = head;
-	head = node;
+void Matrix::PushFront(MatrixNode* new_head) {
+	if (head == nullptr) { head == new_head; tail = new_head; return; }
+	new_head->link = head;
+	head = new_head;
 	size++;
 }
-void Matrix::PushBack(MatrixNode* node) {
-	if (head == nullptr) { head == node; tail = node; return; }
-	tail->link = node;
-	tail = node;
+void Matrix::PushBack(MatrixNode* new_tail) {
+	if (head == nullptr) { head == new_tail; tail = new_tail; return; }
+	tail->link = new_tail;
+	tail = new_tail;
 	size++;
 }
 void Matrix::PopFront() {
