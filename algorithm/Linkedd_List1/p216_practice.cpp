@@ -1286,13 +1286,13 @@ public:
 	~Matrix() { Clear(); cout << "동적 메모리 삭제 완료" << endl; }
 };
 void Matrix::PushFront(MatrixNode* new_head) {
-	if (head == nullptr) { head == new_head; tail = new_head; return; }
+	if (head == nullptr) { head = new_head; tail = new_head; return; }
 	new_head->link = head;
 	head = new_head;
 	size++;
 }
 void Matrix::PushBack(MatrixNode* new_tail) {
-	if (head == nullptr) { head == new_tail; tail = new_tail; return; }
+	if (head == nullptr) { head = new_tail; tail = new_tail; return; }
 	tail->link = new_tail;
 	tail = new_tail;
 	size++;
