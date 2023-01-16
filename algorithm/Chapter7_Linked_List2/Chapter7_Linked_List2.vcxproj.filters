@@ -21,5 +21,8 @@
     <ClCompile Include="p228_Multiplay_Sequence.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p232_Doubly_linked_list.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

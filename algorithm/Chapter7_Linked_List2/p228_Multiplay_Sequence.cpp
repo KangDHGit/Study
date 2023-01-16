@@ -18,8 +18,8 @@ class CircularList {
 	ListNode* head;
 	ListNode* prehead;
 	int size;
-public:
 	void Init() { size = 0; head = nullptr; }
+public:
 	CircularList() { Init(); }
 	void InsertFirst(element item);
 	void Print();
