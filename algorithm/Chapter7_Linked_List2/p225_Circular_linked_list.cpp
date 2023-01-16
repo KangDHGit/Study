@@ -14,6 +14,7 @@ struct ListNode {
 
 class CircularList {
 	ListNode* head;
+	ListNode* prehead;
 	int size;
 public:
 	void Init() { size = 0; head = nullptr; }
@@ -23,6 +24,7 @@ public:
 	void InsertLast(element item);
 	void Print();
 	void Clear();
+	~CircularList() { Clear(); cout << "동적메모리 삭제 성공" << endl; }
 };
 void CircularList::InsertFirst(element item) {
 	ListNode* new_node = new ListNode{ item, nullptr };
@@ -33,6 +35,7 @@ void CircularList::InsertFirst(element item) {
 		size++;
 		return;
 	}
+	if (head->link == head) { prehead = new_node; }
 	new_node->link = head->link;
 	head->link = new_node;
 	size++;
@@ -49,6 +52,7 @@ void CircularList::InsertLast(element item) {
 
 	new_node->link = head->link;
 	head->link = new_node;
+	prehead = head;
 	head = new_node;
 	size++;
 }
@@ -65,12 +69,16 @@ void CircularList::Print() {
 }
 
 void CircularList::Clear() {
+	if (head == nullptr) { return; }
+
 	ListNode* iter = head;
 	ListNode* removed = nullptr;
+	prehead->link = nullptr;
 	while (iter != nullptr)
 	{
-		removed = head;
+		removed = iter;
 		iter = iter->link;
+		cout << removed->data << "삭제 ";
 		delete removed;
 	}
 	Init();
