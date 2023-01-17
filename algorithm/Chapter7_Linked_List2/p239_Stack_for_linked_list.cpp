@@ -19,6 +19,7 @@ public:
 	LinkedStackType() { Init(); }
 	bool IsEmpty() { return top == nullptr; }
 	bool IsFull() { return false; }
+	int GetSize() { return size; }
 	void Push(element item);
 	element Pop();
 	element Peek();
@@ -83,17 +84,15 @@ void LinkedStackType::Clear() {
 
 int main()
 {
-	LinkedStackType* list = new LinkedStackType;
+	LinkedStackType* stack = new LinkedStackType;
 	for (int i = 0; i < 5; i++)
-	{
-		list->Push(i);
-	}
-	list->Print();
+		stack->Push(i);
+
+	stack->Print();
 	for (int i = 0; i < 3; i++)
-	{
-		list->Pop();
-	}
-	list->Print();
-	delete list;
+		stack->Pop();
+
+	stack->Print();
+	delete stack;
 	return 0;
 }

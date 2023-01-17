@@ -30,5 +30,8 @@
     <ClCompile Include="p239_Stack_for_linked_list.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p243_Queue_for_linked_list.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
