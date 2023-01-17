@@ -27,5 +27,8 @@
     <ClCompile Include="p236_Mp3Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p239_Stack_for_linked_list.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
