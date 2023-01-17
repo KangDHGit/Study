@@ -21,7 +21,9 @@ public:
 	Doubly_list() { Init(); }
 	void Clear();
 	void InsertFirst(element item);
+	void Insert(element item, int index);
 	void DeleteFirst();
+	void Delete(element item);
 	void Print();
 	~Doubly_list() { Clear(); delete phead; }
 };
@@ -65,6 +67,27 @@ void Doubly_list::InsertFirst(element item) {
 	size++;
 }
 
+void Doubly_list::Insert(element item, int index) {
+	if (phead == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	if (index < 0 || index > size) { cout << "옳바르지 않은 인덱스 입니다." << endl; return; }
+	ListNode* iter = phead;
+	
+	for (int i = 0; i < index; i++) {
+		iter = iter->r_link;
+		if (iter == nullptr) { cout << i << "번째 노드가 NULL입니다." << endl; }
+	}
+	ListNode* new_node = new ListNode{ item, nullptr, nullptr };
+	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
+	ListNode* l_node = iter;
+	ListNode* r_node = iter->r_link;
+
+	new_node->l_link = l_node;
+	new_node->r_link = r_node;
+	l_node->r_link = new_node;
+	r_node->l_link = new_node;
+	size++;
+}
+
 void Doubly_list::DeleteFirst() {
 	if (IsEmpty()) { cout << "리스트가 이미 비어있습니다." << endl; return; }
 	ListNode* removed = phead->r_link;
@@ -74,6 +97,33 @@ void Doubly_list::DeleteFirst() {
 	r_node->l_link = l_node;
 	delete removed;
 	size--;
+}
+
+void Doubly_list::Delete(element item) {
+	if (phead == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
+	ListNode* removed = phead->r_link;
+	int count = 0;
+	while (removed != phead)
+	{
+		if (removed == nullptr) { cout << "노드가 NULL 입니다." << endl; return; }
+		if (removed->data == item) {
+			ListNode* l_node = removed->l_link;
+			ListNode* r_node = removed->r_link;
+			l_node->r_link = r_node;
+			r_node->l_link = l_node;
+			delete removed;
+			removed = r_node;
+			size--;
+			count++;
+		}
+		else {
+			removed = removed->r_link;
+		}
+	}
+	if (count > 0)
+		cout << "[" << item << "] " << count << "개를 찾아 삭제했습니다." << endl;
+	else
+		cout << "[" << item << "] " << "이 존재하지 않습니다." << endl;
 }
 
 void Doubly_list::Print() {
@@ -91,6 +141,15 @@ int main()
 	Doubly_list* list = new Doubly_list;
 	for (int i = 0; i < 10; i++)
 		list->InsertFirst(element{ i });
+	list->Print();
+
+	list->Insert(element{ 20 },0);
+	list->Insert(element{ 20 },3);
+	list->Insert(element{ 20 },5);
+
+	list->Print();
+
+	list->Delete(element{ 20 });
 
 	list->Print();
 
