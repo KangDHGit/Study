@@ -57,7 +57,7 @@ element LinkedQueueType::Dequeue() {
 }
 
 element LinkedQueueType::Peek() {
-	if (IsEmpty()) { cout << "리스트가 비어있습니다." << endl; element{ -9999 }; }
+	if (IsEmpty()) { cout << "리스트가 비어있습니다." << endl; return element{ -9999 }; }
 	else
 		return front->data;
 }
