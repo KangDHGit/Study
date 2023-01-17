@@ -25,7 +25,7 @@ public:
 	void DeleteFirst();
 	void Delete(element item);
 	void Print();
-	~Doubly_list() { Clear(); delete phead; }
+	~Doubly_list() { Clear(); delete phead; cout << "동적 메모리 삭제 완료" << endl; }
 };
 
 void Doubly_list::Init() {
