@@ -14,7 +14,7 @@ struct ListNode {
 
 class CircularList {
 	ListNode* head;
-	ListNode* prehead;
+	ListNode* prehead;		//Clear시 편의를 위해
 	int size;
 public:
 	void Init() { size = 0; head = nullptr; }
@@ -61,7 +61,7 @@ void CircularList::Print() {
 	ListNode* iter = head->link;
 	do
 	{
-		if (iter->link == nullptr) { cout << "리스트 NULL 오류" << endl; return; }
+		if (iter == nullptr) { cout << "리스트 NULL 오류" << endl; return; }
 		cout.width(3); cout << iter->data;
 		iter = iter->link;
 	} while (iter != head->link);
@@ -87,10 +87,21 @@ void CircularList::Clear() {
 int main()
 {
 	CircularList* list = new CircularList;
+	/*list->InsertLast(20);
+	list->InsertLast(30);
+	list->InsertLast(40);
+	list->InsertFirst(10);*/
+
+	/*list->InsertFirst(10);
+	list->InsertFirst(20);
+	list->InsertFirst(30);
+	list->InsertFirst(40);*/
+
+	list->InsertLast(10);
 	list->InsertLast(20);
 	list->InsertLast(30);
 	list->InsertLast(40);
-	list->InsertFirst(10);
+
 	list->Print();
 	delete list;
 
