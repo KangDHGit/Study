@@ -62,29 +62,28 @@ void Doubly_list::InsertFirst(element item) {
 
 	new_node->l_link = phead;
 	new_node->r_link = r_node;
-	l_node->r_link = new_node;
 	r_node->l_link = new_node;
+	l_node->r_link = new_node;
 	size++;
 }
 
 void Doubly_list::Insert(element item, int index) {
 	if (phead == nullptr) { cout << "리스트가 NULL 입니다." << endl; return; }
 	if (index < 0 || index > size) { cout << "옳바르지 않은 인덱스 입니다." << endl; return; }
-	ListNode* iter = phead;
+	ListNode* l_node = phead;
 	
 	for (int i = 0; i < index; i++) {
-		iter = iter->r_link;
-		if (iter == nullptr) { cout << i << "번째 노드가 NULL입니다." << endl; }
+		l_node = l_node->r_link;
+		if (l_node == nullptr) { cout << i << "번째 노드가 NULL입니다." << endl; return; }
 	}
 	ListNode* new_node = new ListNode{ item, nullptr, nullptr };
 	if (new_node == nullptr) { cout << "메모리 할당 에러" << endl; return; }
-	ListNode* l_node = iter;
-	ListNode* r_node = iter->r_link;
+	ListNode* r_node = l_node->r_link;
 
 	new_node->l_link = l_node;
 	new_node->r_link = r_node;
-	l_node->r_link = new_node;
 	r_node->l_link = new_node;
+	l_node->r_link = new_node;
 	size++;
 }
 
