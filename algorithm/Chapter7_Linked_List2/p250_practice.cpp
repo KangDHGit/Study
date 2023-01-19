@@ -4,9 +4,10 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-//원형 연결리스트 구현 및 특정한 값을 탐색하고 노드를 반환하는 search 함수 작성
+//3. 원형 연결리스트 구현 및 특정한 값을 탐색하고 노드를 반환하는 search 함수 작성
+//4. 원형 연결리스트에 저장된 데이터의 개수를 반환하는 함수 get_size()작성
 typedef int element;
-#pragma region question_3
+#pragma region question_3~4
 struct NodeType {
 	element data;
 	NodeType* link;
@@ -18,6 +19,8 @@ class CircularList {
 	void Init();
 public:
 	CircularList() { Init(); }
+	int GetSize() { return size; }
+	int GetSize2();
 	void InsertFirst(element item);
 	void InsertLast(element	item);
 	void Insert(element item, int index);
@@ -107,6 +110,18 @@ void CircularList::Clear() {
 	delete head;
 	Init();
 }
+int CircularList::GetSize2() {
+	if (head == nullptr) { cout << "리스트가 이미 비어있습니다." << endl; return 0; }
+	NodeType* iter = head;
+	int count = 0;
+	do
+	{
+		if (iter == nullptr) { cout << "노드가 NULL 입니다." << endl; return -9999; }
+		count++;
+		iter = iter->link;
+	} while (iter != head);
+	return count;
+}
 
 class Question_3 {
 public:
@@ -127,12 +142,31 @@ public:
 		delete list;
 	}
 };
+
+class Question_4 {
+public:
+	void Run() {
+		CircularList* list = new CircularList;
+		list->InsertFirst(element{ 20 });
+		list->InsertFirst(element{ 30 });
+		list->InsertFirst(element{ 50 });
+		list->InsertFirst(element{ 60 });
+		list->Insert(element{ 40 }, 2);
+		list->InsertLast(element{ 10 });
+		cout << "GetSize : " << list->GetSize() << " GetSize2 : " << list->GetSize2() << endl;
+		list->Print();
+
+		delete list;
+	}
+};
 #pragma endregion
 
 
 int main()
 {
-	Question_3 q3;
-	q3.Run();
+	/*Question_3 q3;
+	q3.Run();*/
+	Question_4 q4;
+	q4.Run();
 	return 0;
 }
