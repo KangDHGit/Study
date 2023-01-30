@@ -19,7 +19,7 @@ class QueueType {
 	int rear;
 
 public:
-	QueueType() { front = -1; rear = -1; }
+	QueueType() { front = 0; rear = 0; }
 	bool IsEmpty() { return front == rear; }
 	bool IsFull() { return (rear + 1) % MAX_SIZE == front; }
 	void Enqueue(TreeNode* item) {
@@ -47,9 +47,9 @@ void LevelOrder(QueueType queue, TreeNode* root) {
 		order = queue.Dequeue();
 		cout << "[" << order->data << "] ";
 		if (order->left != nullptr)
-			queue.Enqueue(root->left);
+			queue.Enqueue(order->left);
 		if (order->right != nullptr)
-			queue.Enqueue(root->right);
+			queue.Enqueue(order->right);
 	}
 }
 
