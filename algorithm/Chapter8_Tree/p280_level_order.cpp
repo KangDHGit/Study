@@ -28,6 +28,7 @@ public:
 		}
 		rear = (rear + 1) % MAX_SIZE;
 		data[rear] = item;
+		cout << "rear : " << rear << endl;
 	}
 	TreeNode* Dequeue() {
 		if (IsEmpty()) {
