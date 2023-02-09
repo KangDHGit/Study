@@ -14,8 +14,8 @@ public:
 	GraphType() { Init(); }
 	void VisitInit();
 	void AddVertex();
-	void InsertEdge(unsigned int start, unsigned int end);
-	int GetEdge(int start, int end);
+	void InsertEdge(int start,int end);
+	int GetEdge(int start,int end);
 	int GetVertexCount() { return n; }
 	bool GetVisited(int vertex);
 	void SetVisited(int vertex, bool visit);
@@ -51,8 +51,8 @@ int GraphType::GetEdge(int start, int end) {
 	return adj_mat[start][end];
 }
 
-void GraphType::InsertEdge(unsigned int start, unsigned int end) {
-	if (start >= max_vertices || end >= max_vertices)
+void GraphType::InsertEdge(int start, int end) {
+	if (start >= max_vertices || end >= max_vertices || start < 0 || end < 0)
 		cout << "입력 정점번호 오류" << endl;
 	else {
 		adj_mat[start][end] = 1;
@@ -61,16 +61,16 @@ void GraphType::InsertEdge(unsigned int start, unsigned int end) {
 }
 
 bool GraphType::GetVisited(int vertex) {
-	return visited[vertex];
+	return vertex < 0 ? false : visited[vertex];
 }
 
 void GraphType::SetVisited(int vertex, bool visit) {
 	visited[vertex] = visit;
 }
 
-void DfsMat(GraphType* graph, int vertex) {
+void DfsMat(GraphType* graph,int vertex) {
 	if (graph == nullptr) { cout << "그래프가 nullptr 입니다." << endl; return; }
-	if (vertex >= graph->GetVertexCount()) { cout << "입력 정점번호 오류" << endl; return; }
+	if (vertex >= graph->GetVertexCount() || vertex < 0) { cout << "입력 정점번호 오류" << endl; return; }
 	//방문표시
 	graph->SetVisited(vertex, true);
 	cout << "정점 " << vertex << " -> ";
