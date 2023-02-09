@@ -5,7 +5,7 @@ using std::endl;
 using std::cin;
 
 class GraphType {
-	static const int max_vertices = 50;
+	static const int max_vertices = 4;
 	int n;		//정점의 개수
 	int adj_mat[max_vertices][max_vertices];
 public:
