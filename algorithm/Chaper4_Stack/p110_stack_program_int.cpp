@@ -24,14 +24,12 @@ public:
 #pragma region stackType define
 bool stackType::is_full()
 {
-	if (top == MAX_STACK_SIZE) return true;
-	else return false;
+	return top == MAX_STACK_SIZE - 1;
 }
 
 bool stackType::is_empty()
 {
-	if (top == -1) return true;
-	else return false;
+	return top - 1;
 }
 
 void stackType::push(Data item)
