@@ -80,11 +80,10 @@ void DfsList(GraphType* graph, int vertex) {
 
 	//인접노드를 가져옴
 	GraphNode* node = graph->GetHeadNode(vertex);
-	while (node != nullptr)
-	{
-		cout << "정점 " << node->vertex << " -> ";
-		node = node->link;
-		if (node != nullptr && graph->GetVisit(node->vertex))
+	//인접노드 가져오기 반복
+	for (node; node != nullptr; node = node->link)
+	{	//가져온 인접노드가 방문한노드가 아닐경우 재귀호출
+		if (!graph->GetVisit(node->vertex))
 			DfsList(graph, node->vertex);
 	}
 }
@@ -110,7 +109,7 @@ int main()
 	DfsList(&graph, 0);
 	cout << endl;
 
-	graph.VisitInit();
+	/*graph.VisitInit();
 	cout << "깊이 우선탐색 시작" << endl;
 	DfsList(&graph, 1);
 	cout << endl;
@@ -123,7 +122,7 @@ int main()
 	graph.VisitInit();
 	cout << "깊이 우선탐색 시작" << endl;
 	DfsList(&graph, 3);
-	cout << endl;
+	cout << endl;*/
 
 	return 0;
 }
