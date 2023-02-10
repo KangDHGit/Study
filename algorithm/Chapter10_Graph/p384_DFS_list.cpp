@@ -10,7 +10,7 @@ struct GraphNode {
 };
 
 class GraphType {
-	const static int max_vertices = 4;
+	const static int max_vertices = 6;
 	GraphNode* adj_list[max_vertices];
 	int n;
 	bool visited[max_vertices];
@@ -91,7 +91,7 @@ void DfsList(GraphType* graph, int vertex) {
 int main()
 {
 	GraphType graph;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 		graph.AddVertex();
 
 	graph.InsertEdge(0, 1);
@@ -100,10 +100,14 @@ int main()
 	graph.InsertEdge(2, 0);
 	graph.InsertEdge(0, 3);
 	graph.InsertEdge(3, 0);
-	graph.InsertEdge(1, 2);
+	graph.InsertEdge(4, 1);
+	graph.InsertEdge(1, 4);
+	graph.InsertEdge(2, 5);
+	graph.InsertEdge(5, 2);
+	/*graph.InsertEdge(1, 2);
 	graph.InsertEdge(2, 1);
 	graph.InsertEdge(2, 3);
-	graph.InsertEdge(3, 2);
+	graph.InsertEdge(3, 2);*/
 
 	cout << "±íÀÌ ¿ì¼±Å½»ö ½ÃÀÛ" << endl;
 	DfsList(&graph, 0);
