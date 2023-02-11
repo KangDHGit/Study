@@ -106,11 +106,9 @@ void DfsStack(StackType* stack, GraphType* graph) {
 
 		//인접정점 확인 반복문
 		for (vertex other = 0; other < graph->GetSize(); other++)
-		{	// 인접정점이고
-			if (graph->GetEdge(v, other))
-				if (!graph->GetVisited(other)) {	//방문하지 않았을경우
+		{	// 인접정점이고 방문 안했을경우
+			if (graph->GetEdge(v, other) && !graph->GetVisited(other))
 					stack->Push(other);				//스택에 정점 추가
-				}
 		}
 	}
 }

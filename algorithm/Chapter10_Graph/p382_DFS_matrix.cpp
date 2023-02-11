@@ -77,7 +77,7 @@ void DfsMat(GraphType* graph,int vertex) {
 	//입력받은 정점에서 다른정점 방문
 	for (int other = 0; other < graph->GetVertexCount(); other++)
 	{
-		//인접정점이고 and 이미 방문한정점이 아닐경우
+		//다른정점이 인접정점이고 and 이미 방문한정점이 아닐경우
 		if (graph->GetEdge(vertex, other) != 0 && !graph->GetVisited(other))
 			DfsMat(graph, other);	//방문한 정점 other에서 DFS 새로 시작
 	}
