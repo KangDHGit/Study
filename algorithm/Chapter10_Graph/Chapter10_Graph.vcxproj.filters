@@ -30,5 +30,8 @@
     <ClCompile Include="p384_DFS_stack.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p387_BFS_queue_matrix.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
