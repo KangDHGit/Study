@@ -69,7 +69,8 @@ void GraphType::PrintMat() {
 	}
 }
 
-//방문하지 않은 정점을 담을 스택
+//DfsStack0 방문하지 않은 정점을 담을 스택
+//DfsStack1 방문한 정점을 담을 스택
 class StackType {
 	const static int max_size = 10;
 	vertex data[max_size];
@@ -95,20 +96,43 @@ vertex StackType::Pop() {
 		return data[top--];
 }
 
-void DfsStack(StackType* stack, GraphType* graph) {
-	stack->Push(0);
-	while (!stack->IsEmpty())
+void DfsStack0(GraphType* graph, vertex startV) {
+	StackType stack;
+	stack.Push(startV);
+	while (!stack.IsEmpty())
 	{
 		//스택에서 방문하지 않은 정점 하나를 꺼냄
-		vertex v = stack->Pop();
+		vertex v = stack.Pop();
 		graph->SetVisited(v, true);
-		cout << "정점 " << v << " -> ";
+		cout << "방문 " << v << " -> ";
 
 		//인접정점 확인 반복문
 		for (vertex other = 0; other < graph->GetSize(); other++)
 		{	// 인접정점이고 방문 안했을경우
 			if (graph->GetEdge(v, other) && !graph->GetVisited(other))
-					stack->Push(other);				//스택에 정점 추가
+					stack.Push(other);				//스택에 정점 추가
+		}
+	}
+}
+
+void DfsStack1(GraphType* graph, vertex startV) {
+	StackType stack;
+	stack.Push(startV);
+	graph->SetVisited(startV, true);
+
+	while (!stack.IsEmpty())
+	{
+		//스택에서 방문한 정점 하나를 꺼냄
+		vertex v = stack.Pop();
+		cout << "방문 " << v << " -> ";
+
+		//인접정점 확인 반복문
+		for (vertex otherV = 0; otherV < graph->GetSize(); otherV++)
+		{	// 인접정점이고 방문 안했을경우
+			if (graph->GetEdge(v, otherV) && !graph->GetVisited(otherV)) {
+				stack.Push(otherV);				//스택에 정점 추가
+				graph->SetVisited(otherV, true);
+			}
 		}
 	}
 }
@@ -122,7 +146,7 @@ int main()
 	for (int i = 0; i < 6; i++)
 		graph.AddVertex();
 
-	graph.InsertEdge(0, 1);
+	/*graph.InsertEdge(0, 1);
 	graph.InsertEdge(1, 0);
 
 	graph.InsertEdge(0, 2);
@@ -135,12 +159,19 @@ int main()
 	graph.InsertEdge(1, 4);
 
 	graph.InsertEdge(2, 5);
-	graph.InsertEdge(5, 2);
-
-	StackType stack;
+	graph.InsertEdge(5, 2);*/
+	graph.InsertEdge(0, 2);
+	graph.InsertEdge(2, 1);
+	graph.InsertEdge(2, 3);
+	graph.InsertEdge(2, 5);
+	graph.InsertEdge(0, 4);
+	graph.InsertEdge(4, 5);
+	graph.InsertEdge(3, 5);
+	graph.InsertEdge(1, 5);
 
 	cout << "깊이 우선탐색 시작" << endl;
-	DfsStack(&stack, &graph);
+	//DfsStack0(&graph, 0);
+	DfsStack1(&graph, 0);
 	cout << endl;
 	return 0;
 }
