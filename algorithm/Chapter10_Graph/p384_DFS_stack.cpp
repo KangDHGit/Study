@@ -96,43 +96,24 @@ vertex StackType::Pop() {
 		return data[top--];
 }
 
-void DfsStack0(GraphType* graph, vertex startV) {
+//깊이우선탐색(DFS)는 BFS랑 다르게 스택에서 출력할때 방문체크를 한다.
+void DfsStack(GraphType* graph, vertex startV) {
 	StackType stack;
 	stack.Push(startV);
 	while (!stack.IsEmpty())
 	{
 		//스택에서 방문하지 않은 정점 하나를 꺼냄
 		vertex v = stack.Pop();
-		graph->SetVisited(v, true);
-		cout << "방문 " << v << " -> ";
+		if (!graph->GetVisited(v)) {
+			graph->SetVisited(v, true);
+			cout << "방문 " << v << " -> ";
+		}
 
 		//인접정점 확인 반복문
 		for (vertex other = 0; other < graph->GetSize(); other++)
 		{	// 인접정점이고 방문 안했을경우
 			if (graph->GetEdge(v, other) && !graph->GetVisited(other))
 					stack.Push(other);				//스택에 정점 추가
-		}
-	}
-}
-
-void DfsStack1(GraphType* graph, vertex startV) {
-	StackType stack;
-	stack.Push(startV);
-	graph->SetVisited(startV, true);
-
-	while (!stack.IsEmpty())
-	{
-		//스택에서 방문한 정점 하나를 꺼냄
-		vertex v = stack.Pop();
-		cout << "방문 " << v << " -> ";
-
-		//인접정점 확인 반복문
-		for (vertex otherV = 0; otherV < graph->GetSize(); otherV++)
-		{	// 인접정점이고 방문 안했을경우
-			if (graph->GetEdge(v, otherV) && !graph->GetVisited(otherV)) {
-				stack.Push(otherV);				//스택에 정점 추가
-				graph->SetVisited(otherV, true);
-			}
 		}
 	}
 }
@@ -170,8 +151,7 @@ int main()
 	graph.InsertEdge(1, 5);
 
 	cout << "깊이 우선탐색 시작" << endl;
-	//DfsStack0(&graph, 0);
-	DfsStack1(&graph, 0);
+	DfsStack(&graph, 0);
 	cout << endl;
 	return 0;
 }

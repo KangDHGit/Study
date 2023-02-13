@@ -93,6 +93,7 @@ bool GraphType::GetVisit(vertex v) {
 		return visited[v];
 }
 
+//BFS는 큐에 입력하면서 방문체크를 한다(너비우선이기 때문에)
 void BfsMat(GraphType* graph, vertex startV) {
 	QueueType queue;
 	//시작 정점을 방문하고 큐에 추가
