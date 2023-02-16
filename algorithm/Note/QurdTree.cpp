@@ -68,6 +68,50 @@ void Compress(int n, int y, int x) {
 	return;
 }
 
+void RevCompress(int n, int y, int x) {
+	if (n == 1) {
+		cout << map[y][x];
+		return;
+	}
+
+	bool isAllZero = true;
+	bool isAllOne = true;
+
+	//해당 범위가 같은 요소인지 확인
+	for (int i = y; i < y + n; i++)
+	{
+		for (int j = x; j < x + n; j++)
+		{
+			if (map[i][j] == 1)
+				isAllZero = false;
+			else
+				isAllOne = false;
+
+			if (!isAllOne && !isAllZero)
+				break;
+		}
+		//다르면 탈출
+		if (!isAllOne && !isAllZero)
+			break;
+	}
+
+	if (isAllOne)
+		cout << 1;
+	else if (isAllZero)
+		cout << 0;
+	else {
+		//분할표시
+		cout << "(";
+		//분할재귀호출(뒤집어서)
+		RevCompress(n / 2, y + (n / 2), x);				//3사분면(좌하단)
+		RevCompress(n / 2, y + (n / 2), x + (n / 2));	//4사분면(우하단)
+		RevCompress(n / 2, y, x);						//2사분면(좌상단)
+		RevCompress(n / 2, y, x + (n / 2));				//1사분면(우상단)
+		cout << ")";
+	}
+	return;
+}
+
 bool MapLoad(const char* fileName, int& n) {
 	std::ifstream ifs(fileName);
 	if (ifs.is_open()) {
@@ -109,6 +153,8 @@ int main()
 	if(MapLoad("QMap.txt", N))
 		Compress(N, 0, 0);
 	cout << endl;
+	cout << "Reverse" << endl;
+	RevCompress(N, 0, 0);
 
 	return 0;
 }
