@@ -419,6 +419,7 @@ public:
 		for (int i = 0; i < duration; i++) {
 			cout << "실행시간 : " << i << endl;
 			int rand = random(gen);
+			scheduler.run();
 
 			//80프로확률로 작업생성, 생성된 작업의 소요시간은 2~6
 			if (rand < 8) {
@@ -427,7 +428,6 @@ public:
 				scheduler.add_task(t);
 				totaltask++;
 			}
-			scheduler.run();
 			scheduler.print_cpus();
 		}
 		cout << "==========프로그램 종료==========" << endl;
