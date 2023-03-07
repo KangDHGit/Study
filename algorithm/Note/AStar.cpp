@@ -45,11 +45,11 @@ bool isDestination(int row, int col, Coord dst) {
 bool IsInRange(int row, int col) {
 	return (row >= 0 && row < ROW && col >= 0 && col < COL);
 }
-//좌표가 빈공간인지 (벽이 아닌지) 확인하는 함수
+//좌표가 빈공간인지(벽이 아닌지) 확인하는 함수
 bool IsUnblocked(std::vector<std::vector<int>>& map, int row, int col) {
 	return (map[row][col] == 0); //빈공간일경우 참, 아님거짓
 }
-//H(n)을 계산하는 함수
+//h(x)를 계산하는 함수
 double CalcHVale(int row, int col, Coord dst) {
 	return (double)(std::sqrt(std::pow(row - dst.first, 2) + std::pow(col - dst.second, 2)));
 }
@@ -66,7 +66,7 @@ void TracePath(Node nodes[MAX][MAX], Coord dst) {
 
 	//출발점이 아닐때까지 반복(출발점은 자기 좌표랑 부모노드 좌표랑 같음)
 	while (!(nodes[y][x].parentX == x && nodes[y][x].parentY == y))
-	{	//도착좌표 부모노드 부터 출발노드를 부모로 가진 노드까지 반복
+	{	//도착좌표의 부모노드 부터 출발노드를 부모노드로 가진 노드까지 반복
 		//부모노드 좌표를 스택에 삽입
 		int tempX = nodes[y][x].parentX;
 		int tempY = nodes[y][x].parentY;
@@ -95,7 +95,7 @@ bool AStar(std::vector<std::vector<int>>& map, Coord src, Coord dst) {
 		cout << "유효하지 않은 좌표입니다.(src == dst)" << endl; return false;
 	}
 
-	//방문처리할 배멸선언
+	//방문처리할 배열선언
 	bool visitedList[MAX][MAX];
 
 	//메모리의 내용(값)을 원하는 크기만큼 특정값으로 세팅하는 함수
@@ -133,6 +133,7 @@ bool AStar(std::vector<std::vector<int>>& map, Coord src, Coord dst) {
 		int x = cc.second.second;
 		//노드 방문처리
 		visitedList[y][x] = true;
+		cout << "방문한 노드 : " << x << ", " << y << endl;
 
 		double nf, ng, nh;
 
@@ -152,13 +153,13 @@ bool AStar(std::vector<std::vector<int>>& map, Coord src, Coord dst) {
 					nodes[ny][nx].parentY = y;
 					TracePath(nodes, dst);
 					return true;
-				}//도착 안했지만 처음 방문한 좌표이고 벽이 아닌경우
+				}//도착 안했지만 열려있는 좌표이고 벽이 아닌경우
 				else if(!visitedList[ny][nx] && IsUnblocked(map, ny, nx)) {
-					ng = nodes[y][x].g + 1.0;	//g(n)값 입력
-					nh = CalcHVale(ny, nx, dst);	//h(n)값 입력
-					nf = ng + nh;				//f(n)값 입력
+					ng = nodes[y][x].g + 1.0;		//g(x)값 입력
+					nh = CalcHVale(ny, nx, dst);	//h(x)값 입력
+					nf = ng + nh;					//f(x)값 입력
 
-					//f(n)이 갱신이 한번도 안된 좌표거나 이미 갱신이 됐지만 새로구한 f(n)이 더 작을경우 
+					//f(x)가 갱신이 한번도 안된 좌표거나 이미 갱신이 됐지만 새로구한 f(x)이 더 작을경우 
 					if (nodes[ny][nx].f == INF || nodes[ny][nx].f > nf) {
 						nodes[ny][nx].f = nf; //값 입력
 						nodes[ny][nx].g = ng;
@@ -181,27 +182,23 @@ bool AStar(std::vector<std::vector<int>>& map, Coord src, Coord dst) {
 			int ny = y + dy2[i];
 			int nx = x + dx2[i];
 
-			//유효한 좌표일경우
 			if (IsInRange(ny, nx)) {
-				//목적지에 도착했을경우
 				if (isDestination(ny, nx, dst)) {
-					//좌표 ny, nx의 부모좌표에 현재좌표 입력
 					nodes[ny][nx].parentX = x;
 					nodes[ny][nx].parentY = y;
 					TracePath(nodes, dst);
 					return true;
-				}//도착 안했지만 처음 방문한 좌표이고 벽이 아닌경우
+				}
 				else if (!visitedList[ny][nx] && IsUnblocked(map, ny, nx)) {
-					ng = nodes[y][x].g + 1.414;	//g(n)값 입력
-					nh = CalcHVale(ny, nx, dst);	//h(n)값 입력
-					nf = ng + nh;				//f(n)값 입력
+					ng = nodes[y][x].g + 1.414;		//g(x)값 입력
+					nh = CalcHVale(ny, nx, dst);	//h(x)값 입력
+					nf = ng + nh;					//f(x)값 입력
 
-					//f(n)이 갱신이 한번도 안된 좌표거나 이미 갱신이 됐지만 새로구한 f(n)이 더 작을경우 
 					if (nodes[ny][nx].f == INF || nodes[ny][nx].f > nf) {
 						nodes[ny][nx].f = nf; //값 입력
 						nodes[ny][nx].g = ng;
 						nodes[ny][nx].h = nh;
-						//좌표 ny, nx의 부모좌표에 현재좌표 입력
+						
 						nodes[ny][nx].parentX = x;
 						nodes[ny][nx].parentY = y;
 
@@ -249,7 +246,7 @@ int main()
 	Coord src, dst;		//출발, 도착 좌표선언
 
 	//맵 읽어오기
-	std::vector<std::vector<int>> map = MapFileLoad("Map2.txt");
+	std::vector<std::vector<int>> map = MapFileLoad("Map1.txt");
 
 	//출력맵(zmap) 초기화
 	for (int i = 0; i < ROW; i++) {
@@ -257,11 +254,11 @@ int main()
 			zmap[i][j] = map[i][j] + '0';
 
 			if (map[i][j] == SRC) {	//출발지점일경우
-				cout << "출발  지점 : " << i << ", " << j << endl;
+				cout << "출발  지점 : " << j << ", " << i << endl;
 				src = { i, j };
 			}
 			if (map[i][j] == DST) {	//도착지점일경우
-				cout << "도착  지점 : " << i << ", " << j << endl;
+				cout << "도착  지점 : " << j << ", " << i << endl;
 				dst = { i ,j };
 			}
 		}

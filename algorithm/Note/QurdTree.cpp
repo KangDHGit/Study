@@ -7,7 +7,7 @@ using std::endl;
 using std::cin;
 using std::string;
 
-//N ×N 크기의 영상이 주어질 때, 이 영상을 압축한 결과를 출력하는 프로그램을 작성하시오.
+//N × N 크기의 영상이 주어질 때, 이 영상을 압축한 결과를 출력하는 프로그램을 작성하시오.
 //첫째 줄에는 영상의 크기를 나타내는 숫자 N 이 주어진다. N 은 언제나 2의 제곱수로 주어지며
 //1 ≤ N ≤ 64의 범위를 가진다. 두 번째 줄부터는 길이 N의 문자열이 N개 들어온다. 각 문자열은 0 또는 1의 숫자로 이루어져 있으며, 영상의 각 점들을 나타낸다.
 //예제입력			예제출력
@@ -30,6 +30,7 @@ void Compress(int n, int y, int x) {
 		return;
 	}
 
+	//같은 요소인지 확인할 변수
 	bool isAllZero = true;
 	bool isAllOne = true;
 
@@ -43,6 +44,7 @@ void Compress(int n, int y, int x) {
 			else
 				isAllOne = false;
 
+			//다르면 탈출
 			if (!isAllOne && !isAllZero)
 				break;
 		}
@@ -130,6 +132,7 @@ bool MapLoad(const char* fileName, int& n) {
 		}
 		return true;
 	}
+	cout << "맵 로드 실패" << endl;
 	return false;
 }
 
@@ -140,15 +143,6 @@ int main()
 	cin.tie(0);
 
 	int N;
-	//cin >> N;
-
-	/*string str;
-	for (int i = 0; i < N; i++)
-	{
-		cin >> str;
-		for (int j = 0; j < N; j++)
-			map[i][j] = str[j] - '0';
-	}*/
 
 	if(MapLoad("QMap.txt", N))
 		Compress(N, 0, 0);
